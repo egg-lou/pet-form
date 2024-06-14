@@ -23,6 +23,8 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+
+	Query(query string, args ...interface{}) (*sql.Rows, error)
 }
 
 type service struct {
@@ -37,6 +39,10 @@ var (
 	host       = os.Getenv("DB_HOST")
 	dbInstance *service
 )
+
+func (s *service) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	return s.db.Query(query, args...)
+}
 
 func (s *service) createDatabaseIfNotExists() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -74,7 +80,7 @@ func (s *service) createTables() error {
 	return nil
 }
 
-func New() Service {
+func Init() Service {
 	// Reuse Connection
 	if dbInstance != nil {
 		return dbInstance
@@ -117,6 +123,14 @@ func New() Service {
 	err = dbInstance.createTables()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	return dbInstance
+}
+
+func New() Service {
+	if dbInstance == nil {
+		Init()
 	}
 
 	return dbInstance

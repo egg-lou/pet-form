@@ -2,12 +2,15 @@ package server
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"pet-api/internal/handlers/owners"
 )
 
 func (s *FiberServer) RegisterFiberRoutes() {
 	s.App.Get("/", s.HelloWorldHandler)
 
 	s.App.Get("/health", s.healthHandler)
+
+	owners.OwnerRoutes(s.App)
 
 }
 
