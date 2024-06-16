@@ -3,9 +3,11 @@ package database
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
+	"pet-api/internal/queries"
 	"strconv"
 	"time"
 
@@ -38,18 +40,24 @@ var (
 )
 
 func New() Service {
-	// Reuse Connection
+	if dbInstance == nil {
+		Init()
+	}
+	return dbInstance
+}
+
+func Init() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
 
-	// Opening a driver typically will not attempt to connect to the database.
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, dbname))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/", username, password, host, port))
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
 		log.Fatal(err)
 	}
+
 	db.SetConnMaxLifetime(0)
 	db.SetMaxIdleConns(50)
 	db.SetMaxOpenConns(50)
@@ -57,6 +65,31 @@ func New() Service {
 	dbInstance = &service{
 		db: db,
 	}
+
+	err = dbInstance.createDatabaseIfNotExists()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Close the initial connection
+	err = db.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Reconnect, this time to the specific database
+	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, dbname))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dbInstance.db = db
+
+	err = dbInstance.createTables()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return dbInstance
 }
 
@@ -117,4 +150,58 @@ func (s *service) Health() map[string]string {
 func (s *service) Close() error {
 	log.Printf("Disconnected from database: %s", dbname)
 	return s.db.Close()
+}
+
+func (s *service) createDatabaseIfNotExists() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	res, err := s.db.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS "+dbname)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("failed to create database")
+	}
+
+	_, err = s.db.ExecContext(ctx, "USE"+dbname)
+
+	return nil
+}
+
+func (s *service) createTables() error {
+	//tables := []string{
+	//	queries.CreateOwnerTable,
+	//	queries.CreatePetTable,
+	//	queries.CreateVeterinarianTable,
+	//	queries.CreateServiceTable,
+	//	queries.CreatePreventiveCareTable,
+	//	queries.CreateGroomingTable,
+	//	queries.CreateSurgeryTable,
+	//}
+	tables := []string{
+		queries.CreateOwnerTable,
+		queries.CreatePetTable,
+		queries.CreateVeterinarianTable,
+		queries.CreateServiceTable,
+		queries.CreateServiceInstanceTable,
+		queries.CreatePreventiveCareTable,
+		queries.CreateGroomingTable,
+		queries.CreateSurgeryTable,
+	}
+
+	for _, table := range tables {
+		_, err := s.db.Exec(table)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
