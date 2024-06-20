@@ -3,8 +3,10 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"pet-api/internal/database"
+	"pet-api/internal/middlewares"
 	"pet-api/internal/models"
 	"pet-api/internal/queries"
+	"pet-api/internal/utils"
 	"strconv"
 )
 
@@ -19,11 +21,11 @@ func NewOwnerHandler(db database.Service) *OwnerHandler {
 }
 
 func (h *OwnerHandler) SetupRoutes(router fiber.Router) {
-	router.Post("/owner", h.AddOwner)
-	router.Get("/owner", h.GetAllOwners)
-	router.Get("/owner/:id", h.GetOwnerByID)
-	router.Put("/owner/:id", h.UpdateOwner)
-	router.Delete("/owner/:id", h.DeleteOwner)
+	router.Post("/owner", middlewares.FunctionLogger(), h.AddOwner)
+	router.Get("/owner", middlewares.FunctionLogger(), h.GetAllOwners)
+	router.Get("/owner/:id", middlewares.FunctionLogger(), h.GetOwnerByID)
+	router.Put("/owner/:id", middlewares.FunctionLogger(), h.UpdateOwner)
+	router.Delete("/owner/:id", middlewares.FunctionLogger(), h.DeleteOwner)
 }
 
 func (h *OwnerHandler) AddOwner(c *fiber.Ctx) error {
@@ -32,13 +34,15 @@ func (h *OwnerHandler) AddOwner(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	if owner.OwnerName == "" || owner.OwnerAddress == "" || owner.OwnerMobileNumber == "" || owner.OwnerEmailAddress == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "All fields must be filled"})
+	if err := utils.ValidateOwner(owner); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	if err := h.OwnerQueries.AddOwner(owner.OwnerName, owner.OwnerAddress, owner.OwnerLandlineNumber, owner.OwnerMobileNumber, owner.OwnerEmailAddress); err != nil {
+	id, err := h.OwnerQueries.AddOwner(owner.OwnerName, owner.OwnerAddress, owner.OwnerLandlineNumber, owner.OwnerMobileNumber, owner.OwnerEmailAddress)
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
+	owner.OwnerId = id
 	return c.Status(fiber.StatusCreated).JSON(owner)
 }
 
