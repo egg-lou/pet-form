@@ -24,10 +24,15 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+	GetDb() *sql.DB
 }
 
 type service struct {
 	db *sql.DB
+}
+
+func (s *service) GetDb() *sql.DB {
+	return s.db
 }
 
 var (
