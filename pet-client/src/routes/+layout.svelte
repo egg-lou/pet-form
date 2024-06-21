@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, setInitialClassState, getModeUserPrefers } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, setInitialClassState } from '@skeletonlabs/skeleton';
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
 	import 'highlight.js/styles/github-dark.css';
@@ -16,13 +16,12 @@
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('typescript', typescript);
 	storeHighlightJs.set(hljs);
-	import darkModeIcon from '../lib/assets/icons/darkmode-icon.png'
-	import lightModeIcon from '../lib/assets/icons/lightmode-icon.png'
-  let logo;
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+	import pacIcon from '../lib/assets/icons/PACLOGO.png'
+
 </script>
 <svelte:head>{@html '<script>(' + setInitialClassState.toString() + ')();</script>'}</svelte:head>
 <!-- App Shell -->
@@ -31,11 +30,10 @@
 		<!-- App Bar -->
 		<AppBar class="px-10">
 			<svelte:fragment slot="lead">
-				<img
-					src={logo}
-					alt="Paws and Claws Logo"
-					class="w-10 h-10" />
+				<div class="flex items-center gap-2">
+				<img src={pacIcon} alt="paws and claws logo" class="w-10 h-10"/>
 				<strong class="text-xl uppercase">Paws and Claws</strong>
+				</div>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
