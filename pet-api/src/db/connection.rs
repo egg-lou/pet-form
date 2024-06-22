@@ -8,9 +8,11 @@ pub async fn connect() -> Result<MySqlPool, sqlx::Error> {
     };
     let connection_string = format!("mysql://{}:{}@{}:{}/{}",
                                         db_user, db_password, db_host, db_port, db_name);
-    MySqlPoolOptions::new()
+    let pool = MySqlPoolOptions::new()
         .max_connections(5)
         .max_lifetime(std::time::Duration::from_secs(1800))
         .connect(&connection_string)
-        .await
+        .await?;
+
+    Ok(pool)
 }

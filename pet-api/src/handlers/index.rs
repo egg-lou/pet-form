@@ -1,20 +1,19 @@
 use std::sync::Arc;
 
 use axum::{extract::{Path, Query, State}, http::StatusCode, response::IntoResponse, Json, Extension};
+use axum::response::Response;
 
 use serde_json::json;
 use sqlx::MySqlPool;
 use crate::AppState;
 
 pub async fn index() -> impl IntoResponse {
-    const MESSAGE: &str = "Welcome to Paws and Claws API. Server is running!";
 
-    let json_response  = json!({
-        "status": StatusCode::OK.as_u16(),
-        "message": MESSAGE
+    let response  = json!({
+        "message": "Welcome to Paws and Claws API. Server is running!"
     });
 
-    Json(json_response)
+    (StatusCode::OK, Json(response))
 }
 
 pub async fn health_check(State(data): State<Arc<AppState>>) -> impl IntoResponse {
@@ -25,18 +24,18 @@ pub async fn health_check(State(data): State<Arc<AppState>>) -> impl IntoRespons
 
     match result {
         Ok(_) => {
-            let json_response = json!({
-                "status": "ok",
-                "message": "Database connection is healthy"
+            let response = json!({
+                "message": "Health check is successful!",
+                "db_status": "✅ Database connection is healthy"
             });
-            Json(json_response)
+            (StatusCode::OK, Json(response))
         }
         Err(e) => {
-            let json_response = json!({
-                "status": "error",
-                "message": format!("Failed to connect to the database: {}", e)
+            let response = json!({
+                "message": "Database connection error!",
+                "db_status": "❌ Database connection is unhealthy"
             });
-            Json(json_response)
+            (StatusCode::INTERNAL_SERVER_ERROR, Json(response))
         }
     }
 }

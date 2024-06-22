@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="" />
+    <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pet-api/src/db/queries/init_tables.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-api/src/db/queries/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-api/src/sql/create_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-api/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/connection.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-api/src/db/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/mod.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,25 +16,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2iDa0P5Kg2eS9ekXgF5950oCcRI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Code/petsr",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Code/petsr&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -45,6 +51,7 @@
       <option name="presentableId" value="Default" />
       <updated>1719027378074</updated>
       <workItem from="1719027379083" duration="254000" />
+      <workItem from="1719041299877" duration="6000" />
     </task>
     <servers />
   </component>
