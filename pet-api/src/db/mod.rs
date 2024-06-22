@@ -1,2 +1,2 @@
 pub(crate) mod connection;
-mod queries;
+pub(crate) mod queries;

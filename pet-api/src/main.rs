@@ -12,6 +12,7 @@ use sqlx::MySqlPool;
 use tower_http::cors::CorsLayer;
 use crate::db::connection::connect;
 use crate::route::create_router;
+use db::queries::init_tables::create_tables;
 
 use axum::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
@@ -32,6 +33,14 @@ async fn main() {
         },
         Err(e) => {
             error!("❌  Failed to connect to the Database: {}", e);
+            return;
+        }
+    };
+
+    let _ = match create_tables(&pool).await {
+        Ok(_) => info!("✅  Tables Ready"),
+        Err(e) => {
+            error!("❌  Failed to create tables: {}", e);
             return;
         }
     };

@@ -1,1 +1,1 @@
-mod init_tables;
+pub(crate) mod init_tables;
