@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use axum::extract::State;
+use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::Json;
 use axum::response::IntoResponse;
@@ -19,7 +19,39 @@ use crate::{AppState,
             db::queries::owner_queries::{OwnerQueries}
 };
 
-pub async fn add_owner(State(data): State<Arc<AppState>>, Json(body): Json<AddOwner> ) -> Result<(StatusCode, Json<serde_json::Value>), (StatusCode, Json<serde_json::Value>)> {
+pub async fn get_owners(
+    opts: Option<Query<FilterOptions>>,
+    State(data): State<Arc<AppState>>
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let Query(opts) = opts.unwrap_or_default();
+
+    let limit = opts.limit.unwrap_or(10);
+    let offset = (opts.page.unwrap_or(1) -1) * limit;
+
+    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
+
+    let owners = owner_queries.select_all_owners(limit as i32, offset as i32).await;
+
+    match owners {
+        Ok(owners) => {
+            let response = json!({
+                "status":"success",
+                "message":"Owners fetched successfully",
+                "data": json!({
+                    "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+                })
+            });
+
+            Ok((StatusCode::OK, Json(response)))
+        },
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"status": "error", "message": format!("{:?}", e)})),
+        ))
+    }
+}
+
+pub async fn add_owner(State(data): State<Arc<AppState>>, Json(body): Json<AddOwner> ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let owner_id = uuid::Uuid::new_v4().to_string();
 
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));

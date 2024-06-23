@@ -41,11 +41,27 @@ impl OwnerQueries {
 
     pub async fn select_all_owners(
         &self,
+        limit: i32,
+        offset: i32,
     ) -> Result<Vec<OwnerModel>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM owner")
+        sqlx::query_as("SELECT * FROM owner LIMIT ? OFFSET ?")
+            .bind(limit)
+            .bind(offset)
             .fetch_all(&*self.db)
             .await
     }
+
+    pub async fn delete_owner(
+        &self,
+        owner_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        sqlx::query("DELETE FROM owner WHERE id = ?")
+            .bind(owner_id)
+            .execute(&*self.db)
+            .await
+            .map(|done| done.rows_affected())
+    }
+
 
 }
 
