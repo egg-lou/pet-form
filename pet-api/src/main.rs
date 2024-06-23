@@ -4,6 +4,7 @@ mod handlers;
 mod models;
 mod route;
 mod utils;
+mod schemas;
 
 use std::sync::Arc;
 use log::{info, error, Level};

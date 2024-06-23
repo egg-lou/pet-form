@@ -1,72 +1,73 @@
 CREATE TABLE IF NOT EXISTS owner (
-    ownerId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    ownerName VARCHAR(80) NOT NULL,
-    ownerEmail VARCHAR(80),
-    ownerPhoneNumber VARCHAR(20),
-    ownerAddress VARCHAR(120)
+    owner_id VARCHAR(36) PRIMARY KEY NOT NULL,
+    owner_name VARCHAR(80) NOT NULL,
+    owner_email VARCHAR(80),
+    owner_phone_number VARCHAR(20),
+    owner_address VARCHAR(120),
+
+    UNIQUE (owner_email)
 );
 
 CREATE TABLE IF NOT EXISTS pet (
-    petId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    petNAME VARCHAR(50) NOT NULL,
-    petBirthDate DATE,
-    petType ENUM('Dog', 'Cat') NOT NULL,
-    petBreed VARCHAR(40),
-    petWeight DECIMAL(5,2),
-    petColor VARCHAR(20),
-    ownerId INT NOT NULL,
+    pet_id VARCHAR(36) PRIMARY KEY NOT NULL,
+    pet_name VARCHAR(50) NOT NULL,
+    pet_birth_date DATE,
+    pet_type ENUM('Dog', 'Cat') NOT NULL,
+    pet_breed VARCHAR(40),
+    pet_weight DECIMAL(5,2),
+    pet_color VARCHAR(20),
+    owner_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (ownerId) REFERENCES owner(ownerId)
+    FOREIGN KEY (owner_id) REFERENCES owner(owner_id)
 );
 
 CREATE TABLE IF NOT EXISTS veterinarian (
-    vetId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    vetName VARCHAR(80) NOT NULL,
-    vetEmail VARCHAR(50),
-    vetLicenseNumber VARCHAR(20)
+    vet_id VARCHAR(36) PRIMARY KEY NOT NULL,
+    vet_name VARCHAR(80) NOT NULL,
+    vet_email VARCHAR(50),
+    vet_license_number VARCHAR(20)
 );
 
-CREATE TABLE IF NOT EXISTS serviceInstance (
-    serviceInstanceId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    serviceDate DATE NOT NULL,
-    serviceType ENUM('General Checkup', 'Grooming', 'Surgery', 'Preventive Care'),
-    serviceReason VARCHAR(255),
-    veterinarianDiagnosis VARCHAR(500),
-    requiresFollowUp BOOLEAN,
-    followUpDate DATE,
+CREATE TABLE IF NOT EXISTS service_instance (
+    service_instance_id VARCHAR(36) PRIMARY KEY NOT NULL,
+    service_date DATE NOT NULL,
+    service_type ENUM('General Checkup', 'Grooming', 'Surgery', 'Preventive Care'),
+    service_reason VARCHAR(255),
+    veterinarian_diagnosis VARCHAR(500),
+    requires_followup BOOLEAN,
+    followup_date DATE,
 
-    petId INT NOT NULL,
-    FOREIGN KEY (petId) REFERENCES pet(petId)
+    pet_id VARCHAR(36) NOT NULL,
+    FOREIGN KEY (pet_id) REFERENCES pet(pet_id)
 );
 
 CREATE TABLE IF NOT EXISTS grooming (
-    groomingId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    groomingType VARCHAR(20) NOT NULL,
-    serviceInstanceId INT NOT NULL,
+    grooming_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    grooming_type VARCHAR(20) NOT NULL,
+    service_instance_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (serviceInstanceId) REFERENCES serviceInstance(serviceInstanceId)
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
 );
 
-CREATE TABLE IF NOT EXISTS preventiveCare (
-    preventiveCareId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+CREATE TABLE IF NOT EXISTS preventive_care (
+    preventive_care_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     treatment VARCHAR(100) NOT NULL,
-    vetId INT NOT NULL,
-    serviceInstanceId INT NOT NULL,
+    vet_id VARCHAR(36) NOT NULL,
+    service_instance_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (vetId) REFERENCES veterinarian(vetId),
-    FOREIGN KEY (serviceInstanceId) REFERENCES serviceInstance(serviceInstanceId)
+    FOREIGN KEY (vet_id) REFERENCES veterinarian(vet_id),
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
 );
 
 CREATE TABLE IF NOT EXISTS surgery (
-    surgeryId INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    surgeryName VARCHAR(50) NOT NULL,
-    anesthesiaUsed VARCHAR(50),
+    surgery_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    surgery_name VARCHAR(50) NOT NULL,
+    anesthesia_used VARCHAR(50),
     complications VARCHAR(200),
     outcome VARCHAR(200),
-    serviceInstanceId INT NOT NULL,
-    vetId INT NOT NULL,
+    service_instance_id VARCHAR(36) NOT NULL,
+    vet_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (vetId) REFERENCES veterinarian(vetId),
-    FOREIGN KEY (serviceInstanceId) REFERENCES serviceInstance(serviceInstanceId)
+    FOREIGN KEY (vet_id) REFERENCES veterinarian(vet_id),
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
 );
-

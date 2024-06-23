@@ -1,0 +1,19 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct OwnerModel {
+    pub owner_id: String,
+    pub owner_name: String,
+    pub owner_email: String,
+    pub owner_phone_number: String,
+    pub owner_address: String
+}
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct OwnerModelResponse {
+    pub owner_id: String,
+    pub owner_name: String,
+    pub owner_email: String,
+    pub owner_phone_number: String,
+    pub owner_address: String
+}
