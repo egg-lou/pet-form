@@ -44,7 +44,7 @@ impl OwnerQueries {
         limit: i32,
         offset: i32,
     ) -> Result<Vec<OwnerModel>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM owner LIMIT ? OFFSET ?")
+        sqlx::query_as("SELECT * FROM owner ORDER by owner_name LIMIT ? OFFSET ?")
             .bind(limit)
             .bind(offset)
             .fetch_all(&*self.db)
@@ -55,7 +55,7 @@ impl OwnerQueries {
         &self,
         owner_id: String,
     ) -> Result<u64, sqlx::Error> {
-        sqlx::query("DELETE FROM owner WHERE id = ?")
+        sqlx::query("DELETE FROM owner WHERE owner_id = ?")
             .bind(owner_id)
             .execute(&*self.db)
             .await
