@@ -12,40 +12,31 @@ use crate::{AppState,
             models::{
                 owner::{OwnerModel, OwnerModelResponse}
             },
-            utils::model_to_response::{filter_db_record}
+            utils::{
+                model_to_response::{filter_db_record},
+                handle_duplicate_error::{handle_duplicate_entry_error}
+            },
+            db::queries::owner_queries::{OwnerQueries}
 };
 
-pub async fn add_owner(State(data): State<Arc<AppState>>, Json(body): Json<AddOwner> ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+pub async fn add_owner(State(data): State<Arc<AppState>>, Json(body): Json<AddOwner> ) -> Result<(StatusCode, Json<serde_json::Value>), (StatusCode, Json<serde_json::Value>)> {
     let owner_id = uuid::Uuid::new_v4().to_string();
 
-    let query_result =
-        sqlx::query(r#"INSERT INTO owner (owner_id, owner_name, owner_email, owner_phone_number, owner_address) VALUES (?, ?, ?, ?, ?)"#)
-            .bind(owner_id.clone())
-            .bind(body.owner_name.to_string())
-            .bind(body.owner_email.to_string())
-            .bind(body.owner_phone_number.to_string())
-            .bind(body.owner_address.to_string())
-            .execute(&data.db)
-            .await
-            .map_err(|err: sqlx::Error| err.to_string());
+    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
+
+    let query_result = owner_queries.insert_owner(
+        owner_id.clone(),
+        body.owner_name.to_string(),
+        body.owner_email.to_string(),
+        body.owner_phone_number.to_string(),
+        body.owner_address.to_string()
+    ).await;
 
     if let Err(err) = query_result {
-        if err.contains("Duplicate entry") {
-            let error_response = json!({
-                "status":"fail",
-                "message":"Owner already exists"
-            });
-            return Err ((StatusCode::CONFLICT, Json(error_response)));
-        }
-        return Err((
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"status": "error","message": format!("{:?}", err)})),
-        ));
+        return handle_duplicate_entry_error(err, "Owner")
     }
 
-    let owner: Result<OwnerModel, _> = sqlx::query_as("SELECT * FROM owner WHERE owner_id = ?")
-        .bind(owner_id)
-        .fetch_one(&data.db)
+    let owner = owner_queries.select_owner(owner_id.clone())
         .await;
 
     match owner {
