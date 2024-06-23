@@ -1,8 +1,16 @@
 use std::sync::Arc;
-use crate::models::owner::OwnerModel;
+use crate::models::{
+    owner::OwnerModel,
+    pet::PetModel
+};
 
 pub struct OwnerQueries {
     db: Arc<sqlx::MySqlPool>
+}
+
+pub struct OwnerWithPets {
+    pub owner: OwnerModel,
+    pub pets: Vec<PetModel>
 }
 
 impl OwnerQueries {
@@ -110,5 +118,21 @@ impl OwnerQueries {
         Ok(result.rows_affected())
     }
 
+    pub async fn get_owner_and_pets(
+        &self,
+        owner_id: String,
+    ) -> Result<OwnerWithPets, sqlx::Error> {
+        let owner = match self.select_owner(owner_id.clone()).await {
+            Ok(owner) => owner,
+            Err(_) => return Err(sqlx::Error::RowNotFound)
+        };
+
+        let pets = sqlx::query_as::<_, PetModel>("SELECT * FROM PET WHERE owner_id = ? ORDER BY pet_name")
+            .bind(owner_id)
+            .fetch_all(&*self.db)
+            .await?;
+
+        Ok(OwnerWithPets {owner, pets})
+    }
 }
 

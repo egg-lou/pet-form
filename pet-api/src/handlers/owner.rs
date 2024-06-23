@@ -51,6 +51,33 @@ pub async fn get_owners(
     }
 }
 
+pub async fn get_owner_and_pets(
+    State(data): State<Arc<AppState>>,
+    Path(owner_id): Path<String>
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
+
+    match owner_queries.get_owner_and_pets(owner_id.clone()).await {
+        Ok(owner_with_pets) => {
+            let response = json!({
+                "status":"success",
+                "message":"Owner and pets fetched successfully",
+                "data": json!({
+                    "owner": filter_db_record(&owner_with_pets.owner),
+                    "pets": owner_with_pets.pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+                })
+            });
+
+            Ok((StatusCode::OK, Json(response)))
+        },
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"status": "error", "message": format!("{:?}", e)})),
+        ))
+    }
+
+}
+
 pub async fn add_owner(
     State(data): State<Arc<AppState>>,
     Json(body): Json<AddOwner>
@@ -77,7 +104,7 @@ pub async fn add_owner(
                 "status":"success",
                 "message":"Owner added successfully",
                 "data": json!({
-                    "owner": filter_db_record(&owner)
+                    "owner": filter_db_record(&owner),
                 })
             });
 
