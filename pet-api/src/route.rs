@@ -17,6 +17,10 @@ use crate::{
             update_owner,
             get_owner_and_pets,
         },
+        pet::{
+            get_pets,
+            add_pet,
+        }
     }
 };
 
@@ -28,9 +32,14 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
         .route("/update_owner/:owner_id", patch(update_owner))
         .route("/delete_owner/:owner_id", delete(delete_owner));
 
+    let pet_routes = Router::new()
+        .route("/get_pets", get(get_pets))
+        .route("/add_pet", post(add_pet));
+
     Router::new()
         .route("/api", get(index))
         .route("/api/health_check", get(health_check))
         .nest("/api/owner", owner_routes)
+        .nest("/api/pet", pet_routes)
         .with_state(app_state)
 }

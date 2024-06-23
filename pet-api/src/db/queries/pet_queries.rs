@@ -49,7 +49,7 @@ impl PetQueries {
         limit: i32,
         offset: i32,
     ) -> Result<Vec<crate::models::pet::PetModel>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM pet ORDER by pet_name GROUP BY pet_type LIMIT ? OFFSET ?")
+        sqlx::query_as("SELECT * FROM pet ORDER by pet_type LIMIT ? OFFSET ?")
             .bind(limit)
             .bind(offset)
             .fetch_all(&*self.db)
