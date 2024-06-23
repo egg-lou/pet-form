@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use axum::{extract::{Path, Query, State}, http::StatusCode, response::IntoResponse, Json, Extension};
+use axum::{Extension, extract::{Path, Query, State}, http::StatusCode, Json, response::IntoResponse};
 use axum::response::Response;
-
 use serde_json::json;
 use sqlx::MySqlPool;
+
 use crate::AppState;
 
 pub async fn index() -> impl IntoResponse {

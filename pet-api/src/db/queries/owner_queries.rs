@@ -61,7 +61,54 @@ impl OwnerQueries {
             .await
             .map(|done| done.rows_affected())
     }
+    pub async fn update_owner(
+        &self,
+        owner_id: String,
+        owner_name: Option<String>,
+        owner_email: Option<String>,
+        owner_phone_number: Option<String>,
+        owner_address: Option<String>,
+    ) -> Result<u64, sqlx::Error> {
+        let mut query_string = String::from("UPDATE owner SET ");
+        let mut params = Vec::new();
 
+        if let Some(name) = owner_name {
+            query_string.push_str("owner_name = ?, ");
+            params.push(name);
+        }
+
+        if let Some(email) = owner_email {
+            query_string.push_str("owner_email = ?, ");
+            params.push(email);
+        }
+
+        if let Some(phone_number) = owner_phone_number {
+            query_string.push_str("owner_phone_number = ?, ");
+            params.push(phone_number);
+        }
+
+        if let Some(address) = owner_address {
+            query_string.push_str("owner_address = ?, ");
+            params.push(address);
+        }
+
+        if query_string.ends_with(", ") {
+            query_string.truncate(query_string.len() - 2);
+        }
+
+        query_string.push_str(" WHERE owner_id = ?");
+        params.push(owner_id);
+
+        let mut query = sqlx::query(&query_string);
+
+        for param in params {
+            query = query.bind(param);
+        }
+
+        let result = query.execute(&*self.db).await?;
+
+        Ok(result.rows_affected())
+    }
 
 }
 

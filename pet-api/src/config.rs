@@ -1,6 +1,5 @@
 use dotenv::dotenv;
 use std::env;
-use tower_http::cors::{Cors, CorsLayer};
 
 pub fn get_db_config() -> Result<(String, u16, String, String, String), env::VarError> {
     dotenv().ok();
