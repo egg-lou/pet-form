@@ -9,7 +9,7 @@ pub struct PetModel {
     pub pet_breed: String,
     pub pet_weight: f32,
     pub pet_color: String,
-    pub pet_owner_id: String
+    pub owner_id: String
 }
 
 #[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
@@ -21,5 +21,5 @@ pub struct PetModelResponse {
     pub pet_breed: String,
     pub pet_weight: f32,
     pub pet_color: String,
-    pub pet_owner_id: String
+    pub owner_id: String
 }

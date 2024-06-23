@@ -8,7 +8,7 @@ pub struct AddPet {
     pub pet_breed: String,
     pub pet_weight: f32,
     pub pet_color: String,
-    pub pet_owner_id: String,
+    pub owner_id: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -19,5 +19,5 @@ pub struct UpdatePet {
     pub pet_breed: Option<String>,
     pub pet_weight: Option<f32>,
     pub pet_color: Option<String>,
-    pub pet_owner_id: Option<String>,
+    pub owner_id: Option<String>,
 }
