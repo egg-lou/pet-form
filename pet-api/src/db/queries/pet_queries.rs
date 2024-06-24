@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
 }

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS veterinarian (
     vet_id VARCHAR(36) PRIMARY KEY NOT NULL,
     vet_name VARCHAR(80) NOT NULL,
     vet_email VARCHAR(50),
+    vet_phone_number VARCHAR(20),
     vet_license_number VARCHAR(20)
 );
 

@@ -2,17 +2,16 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
-use crate::AppState;
 use crate::db::queries::pet_queries::PetQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::pet_schema::{AddPet, UpdatePet};
-use crate::utils::{model_to_response::filter_db_record, validator::validate_field};
 use crate::utils::handle_duplicate_error::handle_duplicate_entry_error;
-
+use crate::utils::{model_to_response::filter_db_record, validator::validate_field};
+use crate::AppState;
 
 pub async fn get_pets(
     State(data): State<Arc<AppState>>,

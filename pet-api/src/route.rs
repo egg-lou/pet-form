@@ -1,21 +1,20 @@
 use std::sync::Arc;
 
 use axum::{
-    Router,
     routing::{delete, get, patch, post},
+    Router,
 };
 
+use crate::handlers::owner_handler::search_owner;
 use crate::{
-    AppState,
     handlers::{
         index_handler::health_check,
         index_handler::index,
         owner_handler::{add_owner, delete_owner, get_owner_and_pets, get_owners, update_owner},
         pet_handler::{add_pet, delete_pet, get_pets, update_pet},
     },
+    AppState,
 };
-use crate::handlers::owner_handler::search_owner;
-
 
 pub fn create_router(app_state: Arc<AppState>) -> Router {
     let owner_routes = Router::new()
