@@ -3,12 +3,12 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
+use crate::utils::validator::validate_field;
 use crate::{
-    AppState,
     db::queries::owner_queries::OwnerQueries,
     schemas::{
         helper::FilterOptions,
@@ -17,9 +17,8 @@ use crate::{
     utils::{
         handle_duplicate_error::handle_duplicate_entry_error, model_to_response::filter_db_record,
     },
+    AppState,
 };
-use crate::utils::validator::validate_field;
-
 
 pub async fn get_owners(
     opts: Option<Query<FilterOptions>>,
