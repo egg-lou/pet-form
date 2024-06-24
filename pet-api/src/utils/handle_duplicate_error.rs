@@ -2,7 +2,10 @@ use axum::http::StatusCode;
 use axum::Json;
 use serde_json::json;
 
-pub(crate) fn handle_duplicate_entry_error(err: sqlx::Error, entity: &str) -> Result<(StatusCode, Json<serde_json::Value>), (StatusCode, Json<serde_json::Value>)> {
+pub(crate) fn handle_duplicate_entry_error(
+    err: sqlx::Error,
+    entity: &str,
+) -> Result<(StatusCode, Json<serde_json::Value>), (StatusCode, Json<serde_json::Value>)> {
     let err_msg = err.to_string();
     if err_msg.contains("Duplicate entry") {
         let error_response = json!({

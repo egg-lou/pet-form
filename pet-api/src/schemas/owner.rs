@@ -9,7 +9,7 @@ pub struct AddOwner {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-pub struct UpdateOwner{
+pub struct UpdateOwner {
     pub owner_name: Option<String>,
     pub owner_email: Option<String>,
     pub owner_phone_number: Option<String>,

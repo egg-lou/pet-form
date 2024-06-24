@@ -5,7 +5,9 @@ pub fn get_db_config() -> Result<(String, u16, String, String, String), env::Var
     dotenv().ok();
 
     let db_host = env::var("DB_HOST")?;
-    let db_port = env::var("DB_PORT")?.parse::<u16>().map_err(|_| env::VarError::NotPresent)?;
+    let db_port = env::var("DB_PORT")?
+        .parse::<u16>()
+        .map_err(|_| env::VarError::NotPresent)?;
     let db_name = env::var("DB_NAME")?;
     let db_user = env::var("DB_USER")?;
     let db_password = env::var("DB_PASSWORD")?;

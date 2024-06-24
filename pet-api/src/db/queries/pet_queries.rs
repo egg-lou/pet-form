@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 pub struct PetQueries {
-    db: Arc<sqlx::MySqlPool>
+    db: Arc<sqlx::MySqlPool>,
 }
 
 impl PetQueries {
@@ -56,10 +56,7 @@ impl PetQueries {
             .await
     }
 
-    pub async fn delete_pet(
-        &self,
-        pet_id: String,
-    ) -> Result<u64, sqlx::Error> {
+    pub async fn delete_pet(&self, pet_id: String) -> Result<u64, sqlx::Error> {
         sqlx::query("DELETE FROM pet WHERE pet_id = ?")
             .bind(pet_id)
             .execute(&*self.db)

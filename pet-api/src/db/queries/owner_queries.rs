@@ -1,16 +1,13 @@
+use crate::models::{owner::OwnerModel, pet::PetModel};
 use std::sync::Arc;
-use crate::models::{
-    owner::OwnerModel,
-    pet::PetModel
-};
 
 pub struct OwnerQueries {
-    db: Arc<sqlx::MySqlPool>
+    db: Arc<sqlx::MySqlPool>,
 }
 
 pub struct OwnerWithPets {
     pub owner: OwnerModel,
-    pub pets: Vec<PetModel>
+    pub pets: Vec<PetModel>,
 }
 
 impl OwnerQueries {
@@ -25,7 +22,7 @@ impl OwnerQueries {
         owner_email: String,
         owner_phone_number: String,
         owner_address: String,
-    ) -> Result<u64,sqlx::Error> {
+    ) -> Result<u64, sqlx::Error> {
         sqlx::query(r#"INSERT INTO owner (owner_id, owner_name, owner_email, owner_phone_number, owner_address) VALUES (?, ?, ?, ?, ?)"#)
             .bind(owner_id)
             .bind(owner_name)
@@ -37,10 +34,7 @@ impl OwnerQueries {
             .map(|done| done.rows_affected())
     }
 
-    pub async fn select_owner(
-        &self,
-        owner_id: String,
-    ) -> Result<OwnerModel, sqlx::Error> {
+    pub async fn select_owner(&self, owner_id: String) -> Result<OwnerModel, sqlx::Error> {
         sqlx::query_as("SELECT * FROM owner WHERE owner_id = ?")
             .bind(owner_id)
             .fetch_one(&*self.db)
@@ -59,10 +53,7 @@ impl OwnerQueries {
             .await
     }
 
-    pub async fn delete_owner(
-        &self,
-        owner_id: String,
-    ) -> Result<u64, sqlx::Error> {
+    pub async fn delete_owner(&self, owner_id: String) -> Result<u64, sqlx::Error> {
         sqlx::query("DELETE FROM owner WHERE owner_id = ?")
             .bind(owner_id)
             .execute(&*self.db)
@@ -118,21 +109,18 @@ impl OwnerQueries {
         Ok(result.rows_affected())
     }
 
-    pub async fn get_owner_and_pets(
-        &self,
-        owner_id: String,
-    ) -> Result<OwnerWithPets, sqlx::Error> {
+    pub async fn get_owner_and_pets(&self, owner_id: String) -> Result<OwnerWithPets, sqlx::Error> {
         let owner = match self.select_owner(owner_id.clone()).await {
             Ok(owner) => owner,
-            Err(_) => return Err(sqlx::Error::RowNotFound)
+            Err(_) => return Err(sqlx::Error::RowNotFound),
         };
 
-        let pets = sqlx::query_as::<_, PetModel>("SELECT * FROM PET WHERE owner_id = ? ORDER BY pet_name")
-            .bind(owner_id)
-            .fetch_all(&*self.db)
-            .await?;
+        let pets =
+            sqlx::query_as::<_, PetModel>("SELECT * FROM PET WHERE owner_id = ? ORDER BY pet_name")
+                .bind(owner_id)
+                .fetch_all(&*self.db)
+                .await?;
 
-        Ok(OwnerWithPets {owner, pets})
+        Ok(OwnerWithPets { owner, pets })
     }
 }
-

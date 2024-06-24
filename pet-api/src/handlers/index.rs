@@ -1,14 +1,13 @@
 use std::sync::Arc;
 
-use axum::{extract::{State}, http::StatusCode, Json, response::IntoResponse};
+use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
 use serde_json::json;
 use sqlx::MySqlPool;
 
 use crate::AppState;
 
 pub async fn index() -> impl IntoResponse {
-
-    let response  = json!({
+    let response = json!({
         "message": "Welcome to Paws and Claws API. Server is running!"
     });
 
@@ -17,9 +16,7 @@ pub async fn index() -> impl IntoResponse {
 
 pub async fn health_check(State(data): State<Arc<AppState>>) -> impl IntoResponse {
     let pool: &MySqlPool = &data.db;
-    let result = sqlx::query("SELECT 1")
-        .execute(pool)
-        .await;
+    let result = sqlx::query("SELECT 1").execute(pool).await;
 
     match result {
         Ok(_) => {

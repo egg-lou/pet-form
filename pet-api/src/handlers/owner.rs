@@ -1,33 +1,37 @@
 use std::sync::Arc;
+
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
-use crate::{AppState,
-            schemas::{
-                owner::{AddOwner, UpdateOwner},
-                helper::{FilterOptions}
-            },
-            utils::{
-                model_to_response::{filter_db_record},
-                handle_duplicate_error::{handle_duplicate_entry_error}
-            },
-            db::queries::owner_queries::{OwnerQueries}
+
+use crate::{
+    db::queries::owner_queries::OwnerQueries,
+    schemas::{
+        helper::FilterOptions,
+        owner::{AddOwner, UpdateOwner},
+    },
+    utils::{
+        handle_duplicate_error::handle_duplicate_entry_error, model_to_response::filter_db_record,
+    },
+    AppState,
 };
 
 pub async fn get_owners(
     opts: Option<Query<FilterOptions>>,
-    State(data): State<Arc<AppState>>
+    State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let Query(opts) = opts.unwrap_or_default();
 
     let limit = opts.limit.unwrap_or(10);
-    let offset = (opts.page.unwrap_or(1) -1) * limit;
+    let offset = (opts.page.unwrap_or(1) - 1) * limit;
 
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
 
-    let owners = owner_queries.select_all_owners(limit as i32, offset as i32).await;
+    let owners = owner_queries
+        .select_all_owners(limit as i32, offset as i32)
+        .await;
 
     match owners {
         Ok(owners) => {
@@ -40,17 +44,17 @@ pub async fn get_owners(
             });
 
             Ok((StatusCode::OK, Json(response)))
-        },
+        }
         Err(e) => Err((
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        ))
+        )),
     }
 }
 
 pub async fn get_owner_and_pets(
     State(data): State<Arc<AppState>>,
-    Path(owner_id): Path<String>
+    Path(owner_id): Path<String>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
 
@@ -66,33 +70,34 @@ pub async fn get_owner_and_pets(
             });
 
             Ok((StatusCode::OK, Json(response)))
-        },
+        }
         Err(e) => Err((
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        ))
+        )),
     }
-
 }
 
 pub async fn add_owner(
     State(data): State<Arc<AppState>>,
-    Json(body): Json<AddOwner>
+    Json(body): Json<AddOwner>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let owner_id = uuid::Uuid::new_v4().to_string();
 
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
 
-    let query_result = owner_queries.insert_owner(
-        owner_id.clone(),
-        body.owner_name.to_string(),
-        body.owner_email.to_string(),
-        body.owner_phone_number.to_string(),
-        body.owner_address.to_string()
-    ).await;
+    let query_result = owner_queries
+        .insert_owner(
+            owner_id.clone(),
+            body.owner_name.to_string(),
+            body.owner_email.to_string(),
+            body.owner_phone_number.to_string(),
+            body.owner_address.to_string(),
+        )
+        .await;
 
     if let Err(err) = query_result {
-        return handle_duplicate_entry_error(err, "Owner")
+        return handle_duplicate_entry_error(err, "Owner");
     }
 
     match owner_queries.select_owner(owner_id.clone()).await {
@@ -106,11 +111,11 @@ pub async fn add_owner(
             });
 
             Ok((StatusCode::CREATED, Json(response)))
-        },
+        }
         Err(e) => Err((
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        ))
+        )),
     }
 }
 
@@ -137,16 +142,18 @@ pub async fn update_owner(
             let owner_phone_number = body.owner_phone_number.clone();
             let owner_address = body.owner_address.clone();
 
-            let query_result = owner_queries.update_owner(
-                owner_id.clone(),
-                owner_name,
-                owner_email,
-                owner_phone_number,
-                owner_address
-            ).await;
+            let query_result = owner_queries
+                .update_owner(
+                    owner_id.clone(),
+                    owner_name,
+                    owner_email,
+                    owner_phone_number,
+                    owner_address,
+                )
+                .await;
 
             if let Err(err) = query_result {
-                return handle_duplicate_entry_error(err, "Owner")
+                return handle_duplicate_entry_error(err, "Owner");
             }
 
             match owner_queries.select_owner(owner_id.clone()).await {
@@ -160,23 +167,23 @@ pub async fn update_owner(
                     });
 
                     Ok((StatusCode::OK, Json(response)))
-                },
+                }
                 Err(e) => Err((
                     StatusCode::INTERNAL_SERVER_ERROR,
                     Json(json!({"status": "error", "message": format!("{:?}", e)})),
-                ))
+                )),
             }
-        },
+        }
         Err(e) => Err((
             StatusCode::NOT_FOUND,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        ))
+        )),
     }
 }
 
 pub async fn delete_owner(
     Path(owner_id): Path<String>,
-    State(data): State<Arc<AppState>>
+    State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
 
@@ -192,14 +199,14 @@ pub async fn delete_owner(
             } else {
                 Err((
                     StatusCode::NOT_FOUND,
-                    Json(json!({"status": "error", "message": "Owner not found"}))
+                    Json(json!({"status": "error", "message": "Owner not found"})),
                 ))
             }
-        },
+        }
         Err(e) => Err((
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        ))
+        )),
     }
 }
 

@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
 use chrono::NaiveDate;
 use rust_decimal::Decimal;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
 pub struct PetModel {
@@ -11,7 +11,7 @@ pub struct PetModel {
     pub pet_breed: String,
     pub pet_weight: Decimal,
     pub pet_color: String,
-    pub owner_id: String
+    pub owner_id: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
@@ -23,5 +23,5 @@ pub struct PetModelResponse {
     pub pet_breed: String,
     pub pet_weight: Decimal,
     pub pet_color: String,
-    pub owner_id: String
+    pub owner_id: String,
 }
