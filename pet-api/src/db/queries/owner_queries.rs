@@ -1,5 +1,7 @@
-use crate::models::{owner::OwnerModel, pet::PetModel};
 use std::sync::Arc;
+
+use crate::models::{owner::OwnerModel, pet::PetModel};
+
 
 pub struct OwnerQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -122,5 +124,15 @@ impl OwnerQueries {
                 .await?;
 
         Ok(OwnerWithPets { owner, pets })
+    }
+
+    pub async fn search_owner_by_name(
+        &self,
+        owner_name: String,
+    ) -> Result<Vec<OwnerModel>, sqlx::Error> {
+        sqlx::query_as::<_, OwnerModel>("SELECT * FROM owner WHERE owner_name LIKE ?")
+            .bind(format!("%{}%", owner_name))
+            .fetch_all(&*self.db)
+            .await
     }
 }

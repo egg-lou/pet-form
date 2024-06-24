@@ -1,12 +1,14 @@
+use std::collections::HashMap;
 use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
+use axum::response::IntoResponse;
 use serde_json::json;
 
 use crate::{
+    AppState,
     db::queries::owner_queries::OwnerQueries,
     schemas::{
         helper::FilterOptions,
@@ -15,8 +17,9 @@ use crate::{
     utils::{
         handle_duplicate_error::handle_duplicate_entry_error, model_to_response::filter_db_record,
     },
-    AppState,
 };
+use crate::utils::validator::validate_field;
+
 
 pub async fn get_owners(
     opts: Option<Query<FilterOptions>>,
@@ -210,30 +213,48 @@ pub async fn delete_owner(
     }
 }
 
+pub async fn search_owner(
+    Query(search_owner): Query<HashMap<String, String>>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let owner_name = match search_owner.get("owner_name") {
+        Some(name) => name,
+        None => {
+            return Err((
+                StatusCode::BAD_REQUEST,
+                Json(json!({"status": "error", "message": "Owner name is required"})),
+            ))
+        }
+    };
+
+    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
+
+    match owner_queries.search_owner_by_name(owner_name.clone()).await {
+        Ok(owners) => {
+            let response = json!({
+            "status": "success",
+            "message": "Owners with the given name fetched successfully",
+            "data": json!({
+                "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+            })
+            });
+            Ok((StatusCode::OK, Json(response)))
+        }
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"status": "error", "message": format!("{:?}", e)})),
+        )),
+    }
+}
+
 fn validate_owner_fields(body: &UpdateOwner) -> Result<(), String> {
-    if let Some(field) = &body.owner_name {
-        if field.trim().is_empty() {
-            return Err("Owner name must not be empty".to_string());
-        }
-    }
-
-    if let Some(field) = &body.owner_email {
-        if field.trim().is_empty() {
-            return Err("Owner email must not be empty".to_string());
-        }
-    }
-
-    if let Some(field) = &body.owner_phone_number {
-        if field.trim().is_empty() {
-            return Err("Owner phone number must not be empty".to_string());
-        }
-    }
-
-    if let Some(field) = &body.owner_address {
-        if field.trim().is_empty() {
-            return Err("Owner address must not be empty".to_string());
-        }
-    }
+    validate_field(&body.owner_name, "Owner name cannot be empty")?;
+    validate_field(&body.owner_email, "Owner email cannot be empty")?;
+    validate_field(
+        &body.owner_phone_number,
+        "Owner phone number cannot be empty",
+    )?;
+    validate_field(&body.owner_address, "Owner address cannot be empty")?;
 
     Ok(())
 }
