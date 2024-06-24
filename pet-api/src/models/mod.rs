@@ -1,2 +1,2 @@
-pub(crate) mod owner;
-pub(crate) mod pet;
+pub(crate) mod owner_model;
+pub(crate) mod pet_model;

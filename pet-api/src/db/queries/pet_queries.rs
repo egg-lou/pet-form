@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
 }
@@ -37,7 +38,7 @@ impl PetQueries {
     pub async fn select_pet(
         &self,
         pet_id: String,
-    ) -> Result<crate::models::pet::PetModel, sqlx::Error> {
+    ) -> Result<crate::models::pet_model::PetModel, sqlx::Error> {
         sqlx::query_as("SELECT * FROM pet WHERE pet_id = ?")
             .bind(pet_id)
             .fetch_one(&*self.db)
@@ -48,7 +49,7 @@ impl PetQueries {
         &self,
         limit: i32,
         offset: i32,
-    ) -> Result<Vec<crate::models::pet::PetModel>, sqlx::Error> {
+    ) -> Result<Vec<crate::models::pet_model::PetModel>, sqlx::Error> {
         sqlx::query_as("SELECT * FROM pet ORDER by pet_type LIMIT ? OFFSET ?")
             .bind(limit)
             .bind(offset)
