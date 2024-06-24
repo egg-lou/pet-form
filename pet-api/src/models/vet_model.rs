@@ -10,6 +10,12 @@ pub struct VetModel {
 }
 
 #[derive(Deserialize, Serialize, Debug, sqlx::FromRow)]
+pub struct GetVets {
+    pub vet_id: String,
+    pub vet_name: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, sqlx::FromRow)]
 pub struct VetModelResponse {
     pub vet_id: String,
     pub vet_name: String,

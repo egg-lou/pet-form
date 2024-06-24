@@ -1,3 +1,3 @@
 pub(crate) mod owner_model;
 pub(crate) mod pet_model;
-mod vet_model;
+pub(crate) mod vet_model;
