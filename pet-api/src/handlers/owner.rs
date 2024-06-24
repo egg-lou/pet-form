@@ -9,9 +9,6 @@ use crate::{AppState,
                 owner::{AddOwner, UpdateOwner},
                 helper::{FilterOptions}
             },
-            models::{
-                owner::{OwnerModel, OwnerModelResponse}
-            },
             utils::{
                 model_to_response::{filter_db_record},
                 handle_duplicate_error::{handle_duplicate_entry_error}

@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
 #[derive(Deserialize, Debug, Default)]
 pub struct FilterOptions {
@@ -6,7 +6,7 @@ pub struct FilterOptions {
     pub limit: Option<usize>
 }
 
-#[derive(Deserialize, Debug)]
-pub struct ParamOptions {
-    pub id: String
-}
+// #[derive(Deserialize, Debug)]
+// pub struct ParamOptions {
+//     pub id: String
+// }

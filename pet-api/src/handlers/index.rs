@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Extension, extract::{Path, Query, State}, http::StatusCode, Json, response::IntoResponse};
-use axum::response::Response;
+use axum::{extract::{State}, http::StatusCode, Json, response::IntoResponse};
 use serde_json::json;
 use sqlx::MySqlPool;
 
@@ -30,7 +29,7 @@ pub async fn health_check(State(data): State<Arc<AppState>>) -> impl IntoRespons
             });
             (StatusCode::OK, Json(response))
         }
-        Err(e) => {
+        Err(__e) => {
             let response = json!({
                 "message": "Database connection error!",
                 "db_status": "❌ Database connection is unhealthy"

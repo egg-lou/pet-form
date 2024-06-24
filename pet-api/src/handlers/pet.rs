@@ -8,7 +8,7 @@ use crate::AppState;
 use crate::schemas::helper::FilterOptions;
 use crate::db::queries::pet_queries::PetQueries;
 use crate::utils::model_to_response::filter_db_record;
-use crate::schemas::pet::{AddPet, UpdatePet};
+use crate::schemas::pet::{AddPet};
 
 pub async fn get_pets(
     State(data): State<Arc<AppState>>,
@@ -47,7 +47,7 @@ pub async fn add_pet(
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let pet_id = uuid::Uuid::new_v4().to_string();
     let pet_queries = PetQueries::new(Arc::new(data.db.clone()));
-    let pet = pet_queries.insert_pet(
+    let _pet = pet_queries.insert_pet(
         pet_id.clone(),
         body.pet_name.to_string(),
         body.pet_birth_date,
@@ -74,4 +74,6 @@ pub async fn add_pet(
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
         ))
     }
+
+
 }
