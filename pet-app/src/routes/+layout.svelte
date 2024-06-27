@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import '../app.css';
+	import { ModeWatcher } from 'mode-watcher';
+ import Navbar from '@/components/ui/navbar/navbar.svelte';
 </script>
 
-<slot></slot>
+<ModeWatcher />
+<Navbar />
+<slot />
 
 <style></style>
