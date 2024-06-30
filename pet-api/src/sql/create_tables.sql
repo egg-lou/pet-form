@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS pet (
     pet_color VARCHAR(20),
     owner_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (owner_id) REFERENCES owner(owner_id)
+    FOREIGN KEY (owner_id) REFERENCES owner(owner_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS veterinarian (
@@ -31,17 +31,23 @@ CREATE TABLE IF NOT EXISTS veterinarian (
     UNIQUE (vet_email, vet_license_number)
 );
 
+CREATE TABLE IF NOT EXISTS service_type (
+    service_type_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    service_type_name VARCHAR(50) NOT NULL
+    service_instance_id INT NOT NULL
+
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS service_instance (
     service_instance_id VARCHAR(36) PRIMARY KEY NOT NULL,
     service_date DATE NOT NULL,
-    service_type ENUM('General Checkup', 'Grooming', 'Surgery', 'Preventive Care'),
     service_reason VARCHAR(255),
-    veterinarian_diagnosis VARCHAR(500),
     requires_followup BOOLEAN,
     followup_date DATE,
 
     pet_id VARCHAR(36) NOT NULL,
-    FOREIGN KEY (pet_id) REFERENCES pet(pet_id)
+    FOREIGN KEY (pet_id) REFERENCES pet(pet_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS grooming (
@@ -49,7 +55,7 @@ CREATE TABLE IF NOT EXISTS grooming (
     grooming_type VARCHAR(20) NOT NULL,
     service_instance_id VARCHAR(36) NOT NULL,
 
-    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS preventive_care (
@@ -59,11 +65,12 @@ CREATE TABLE IF NOT EXISTS preventive_care (
     service_instance_id VARCHAR(36) NOT NULL,
 
     FOREIGN KEY (vet_id) REFERENCES veterinarian(vet_id),
-    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS surgery (
     surgery_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    veterinarian_diagnosis VARCHAR(500),
     surgery_name VARCHAR(50) NOT NULL,
     anesthesia_used VARCHAR(50),
     complications VARCHAR(200),
@@ -72,5 +79,5 @@ CREATE TABLE IF NOT EXISTS surgery (
     vet_id VARCHAR(36) NOT NULL,
 
     FOREIGN KEY (vet_id) REFERENCES veterinarian(vet_id),
-    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id)
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
 );
