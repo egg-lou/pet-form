@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pet-api/src/db/queries/init_tables.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/src/db/queries/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/src/sql/create_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/connection.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +29,11 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Code/petsr&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\rafae\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -52,6 +54,8 @@
       <updated>1719027378074</updated>
       <workItem from="1719027379083" duration="254000" />
       <workItem from="1719041299877" duration="6000" />
+      <workItem from="1719626133569" duration="4193000" />
+      <workItem from="1719673994610" duration="589000" />
     </task>
     <servers />
   </component>
