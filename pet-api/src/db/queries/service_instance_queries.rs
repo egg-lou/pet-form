@@ -310,6 +310,7 @@ impl ServiceInstanceQueries {
             .await?;
 
         let mut surgeries = Vec::new();
+
         for row in surgery_rows {
             let vet_id: String = row.get("vet_id");
             let vet_row = sqlx::query("SELECT * FROM veterinarian WHERE vet_id = ?")
@@ -344,7 +345,7 @@ impl ServiceInstanceQueries {
             } else {
                 Some(preventive_cares)
             },
-            surgery: surgeries.into_iter().next(),
+            surgery: Option::from(surgeries),
             ..service_instance
         };
 
@@ -550,5 +551,22 @@ impl ServiceInstanceQueries {
         let result = query.execute(&*self.db).await?;
 
         Ok(result.rows_affected())
+    }
+
+    pub async fn add_surgery(
+        &self,
+        add_surgery: AddSurgery,
+        service_instance_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        let row = sqlx::query(&self.create_surgery)
+            .bind(add_surgery.surgery_name.clone())
+            .bind(add_surgery.anesthesia_used.clone())
+            .bind(add_surgery.complications.clone())
+            .bind(add_surgery.outcome.clone())
+            .bind(service_instance_id.clone())
+            .bind(add_surgery.vet_id.clone())
+            .execute(&*self.db)
+            .await?;
+        Ok(row.rows_affected())
     }
 }

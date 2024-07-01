@@ -14,7 +14,7 @@ pub struct ServiceInstanceModel {
     pub followup_date: Option<chrono::NaiveDate>,
     pub grooming: Option<Vec<GroomingModel>>,
     pub preventive_care: Option<Vec<PreventiveCareModel>>,
-    pub surgery: Option<SurgeryModel>,
+    pub surgery: Option<Vec<SurgeryModel>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
