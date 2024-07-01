@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ServiceInstance {
     pub service_instance_id: String,
