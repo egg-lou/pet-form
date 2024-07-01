@@ -1,8 +1,13 @@
+use core::option::Option;
 use std::sync::Arc;
 
+use sqlx::Row;
+
+use crate::models::service_instance_model::GetServicesHistoryModel;
 use crate::schemas::service_instance_schema::{
     AddPreventiveCare, AddSurgery, Grooming, PreventiveCare, ServiceInstance, Surgery,
 };
+
 
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -11,6 +16,12 @@ pub struct ServiceInstanceQueries {
     pub create_grooming: &'static str,
     pub create_preventive_care: &'static str,
     pub create_surgery: &'static str,
+    pub get_service_instance_of_pet: &'static str,
+    pub get_specific_service_instance: &'static str,
+    pub get_grooming_of_service_instance: &'static str,
+    pub get_preventive_care_of_service_instance: &'static str,
+    pub get_surgery_of_service_instance: &'static str,
+    pub get_service_instance_type: &'static str,
 }
 
 impl ServiceInstanceQueries {
@@ -25,6 +36,12 @@ impl ServiceInstanceQueries {
             service_instance_id) VALUES (?, ?, ?)"#,
             create_surgery: r#"INSERT INTO surgery (surgery_name, anesthesia_used, complications,
              outcome, service_instance_id, vet_id) VALUES (?, ?, ?, ?, ?, ?)"#,
+            get_service_instance_of_pet: r#"SELECT * FROM service_instance WHERE pet_id = ?"#,
+            get_specific_service_instance: r#"SELECT * FROM service_instance WHERE service_instance_id = ?"#,
+            get_grooming_of_service_instance: r#"SELECT * FROM grooming WHERE service_instance_id = ?"#,
+            get_preventive_care_of_service_instance: r#"SELECT * FROM preventive_care WHERE service_instance_id = ?"#,
+            get_surgery_of_service_instance: r#"SELECT * FROM surgery WHERE service_instance_id = ?"#,
+            get_service_instance_type: r#"SELECT service_type_name FROM service_type WHERE service_instance_id = ?"#,
         }
     }
 
@@ -155,5 +172,62 @@ impl ServiceInstanceQueries {
                 Some(surgeries[0].clone())
             },
         })
+    }
+    pub async fn get_services_history_of_pet(
+        &self,
+        limit: i32,
+        offset: i32,
+        pet_id: String,
+    ) -> Result<Vec<GetServicesHistoryModel>, sqlx::Error> {
+        let rows = sqlx::query (
+            r#"
+        SELECT service_instance.*, service_type.service_type_name
+        FROM service_instance
+        LEFT JOIN service_type ON service_instance.service_instance_id = service_type.service_instance_id
+        WHERE service_instance.pet_id = ?
+        ORDER BY service_instance.service_instance_id
+        LIMIT ? OFFSET ?
+        "#,
+        )
+            .bind(pet_id)
+            .bind(limit)
+            .bind(offset)
+            .fetch_all(&*self.db)
+            .await?;
+
+        let mut services = Vec::new();
+        let mut current_service: Option<GetServicesHistoryModel> = None;
+
+        for row in rows {
+            let service_instance_id: String = row.get("service_instance_id");
+            let service_type_name: String = row.get("service_type_name");
+
+            match current_service.as_mut() {
+                Some(service) if service.service_instance_id == service_instance_id => {
+                    service.service_type.push(service_type_name);
+                }
+                _ => {
+                    if let Some(service) = current_service.take() {
+                        services.push(service);
+                    }
+
+                    current_service = Some(GetServicesHistoryModel {
+                        service_instance_id: service_instance_id.clone(),
+                        service_date: row.get("service_date"),
+                        service_type: vec![service_type_name],
+                        service_reason: row.get("service_reason"),
+                        general_diagnosis: row.get("general_diagnosis"),
+                        requires_followup: row.get("requires_followup"),
+                        followup_date: row.get("followup_date"),
+                    });
+                }
+            }
+        }
+
+        if let Some(service) = current_service {
+            services.push(service);
+        }
+
+        Ok(services)
     }
 }

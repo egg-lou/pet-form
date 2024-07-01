@@ -2,17 +2,18 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::vet_model::VetModelForService;
 
+
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct ServiceInstance {
     pub service_instance_id: String,
     pub service_date: String,
-    pub service_type: String,
+    pub service_type: Vec<String>,
     pub service_reason: String,
-    pub veterinarian_diagnosis: String,
+    pub general_diagnosis: String,
     pub requires_followup: bool,
     pub followup_date: String,
-    pub grooming: Option<GroomingModel>,
-    pub preventive_care: Option<PreventiveCareModel>,
+    pub grooming: Option<Vec<GroomingModel>>,
+    pub preventive_care: Option<Vec<PreventiveCareModel>>,
     pub surgery: Option<SurgeryModel>,
 }
 
@@ -37,4 +38,15 @@ pub struct SurgeryModel {
     pub complications: String,
     pub outcome: String,
     pub vet: VetModelForService,
+}
+
+#[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
+pub struct GetServicesHistoryModel {
+    pub service_instance_id: String,
+    pub service_date: chrono::NaiveDate,
+    pub service_type: Vec<String>,
+    pub service_reason: String,
+    pub general_diagnosis: String,
+    pub requires_followup: bool,
+    pub followup_date: Option<chrono::NaiveDate>,
 }
