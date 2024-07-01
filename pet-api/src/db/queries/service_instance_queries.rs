@@ -8,8 +8,10 @@ use crate::models::service_instance_model::{
 };
 use crate::models::vet_model::VetModelForService;
 use crate::schemas::service_instance_schema::{
-    AddPreventiveCare, AddSurgery, Grooming, PreventiveCare, ServiceInstance, Surgery,
+    AddPreventiveCare, AddPreventiveCareToExisting, AddSurgery, Grooming, PreventiveCare,
+    ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
+
 
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -255,6 +257,16 @@ impl ServiceInstanceQueries {
             surgery: None,
         };
 
+        let service_type_rows = sqlx::query(&self.get_service_instance_type)
+            .bind(&service_instance_id)
+            .fetch_all(&*self.db)
+            .await?;
+
+        let mut service_types = Vec::new();
+        for row in service_type_rows {
+            service_types.push(row.get("service_type_name"));
+        }
+
         let grooming_rows = sqlx::query(&self.get_grooming_of_service_instance)
             .bind(&service_instance_id)
             .fetch_all(&*self.db)
@@ -322,6 +334,7 @@ impl ServiceInstanceQueries {
         }
 
         let service_instance = ServiceInstanceModel {
+            service_type: service_types,
             grooming: if groomings.is_empty() {
                 None
             } else {
@@ -337,5 +350,206 @@ impl ServiceInstanceQueries {
         };
 
         Ok(service_instance)
+    }
+
+    pub async fn delete_grooming(&self, grooming_id: i32) -> Result<u64, sqlx::Error> {
+        let row = sqlx::query("DELETE FROM grooming WHERE grooming_id = ?")
+            .bind(grooming_id)
+            .execute(&*self.db)
+            .await?;
+
+        Ok(row.rows_affected())
+    }
+
+    pub async fn delete_preventive_care(
+        &self,
+        preventive_care_id: i32,
+    ) -> Result<u64, sqlx::Error> {
+        let row = sqlx::query("DELETE FROM preventive_care WHERE preventive_care_id = ?")
+            .bind(preventive_care_id)
+            .execute(&*self.db)
+            .await?;
+
+        Ok(row.rows_affected())
+    }
+    pub async fn delete_surgery(&self, surgery_id: i32) -> Result<u64, sqlx::Error> {
+        let row = sqlx::query("DELETE FROM surgery WHERE surgery_id = ?")
+            .bind(surgery_id)
+            .execute(&*self.db)
+            .await?;
+
+        Ok(row.rows_affected())
+    }
+
+    pub async fn delete_service_instance(
+        &self,
+        service_instance_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        let row = sqlx::query("DELETE FROM service_instance WHERE service_instance_id = ?")
+            .bind(service_instance_id)
+            .execute(&*self.db)
+            .await?;
+
+        Ok(row.rows_affected())
+    }
+
+    pub async fn add_grooming(
+        &self,
+        service_instance_id: String,
+        grooming_types: Vec<String>,
+    ) -> Result<u64, sqlx::Error> {
+        let mut total_rows_affected = 0;
+        for grooming_type in grooming_types {
+            let row = sqlx::query(
+                "INSERT INTO grooming (grooming_type, service_instance_id) VALUES \
+            (?, ?",
+            )
+            .bind(grooming_type)
+            .bind(&service_instance_id)
+            .execute(&*self.db)
+            .await?;
+            total_rows_affected += row.rows_affected();
+        }
+        Ok(total_rows_affected)
+    }
+
+    pub async fn add_preventive_care(
+        &self,
+        add_preventive_care_to_existing: AddPreventiveCareToExisting,
+        service_instance_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        let mut total_rows_affected = 0;
+        for treatment in add_preventive_care_to_existing.treatment {
+            let row = sqlx::query(&self.create_preventive_care)
+                .bind(treatment)
+                .bind(add_preventive_care_to_existing.vet_id.clone())
+                .bind(service_instance_id.clone())
+                .execute(&*self.db)
+                .await?;
+            total_rows_affected += row.rows_affected();
+        }
+        Ok(total_rows_affected)
+    }
+
+    pub async fn update_surgery(
+        &self,
+        update_surgery: UpdateSurgery,
+        surgery_id: i32,
+    ) -> Result<u64, sqlx::Error> {
+        let mut query_string = String::from("UPDATE surgery SET ");
+        let mut params = Vec::new();
+
+        if let Some(surgery_name) = update_surgery.surgery_name {
+            query_string.push_str("surgery_name = ?, ");
+            params.push(surgery_name);
+        }
+
+        if let Some(anesthesia_used) = update_surgery.anesthesia_used {
+            query_string.push_str("anesthesia_used = ?, ");
+            params.push(anesthesia_used);
+        }
+
+        if let Some(veterinarian_diagnosis) = update_surgery.veterinarian_diagnosis {
+            query_string.push_str("veterinarian_diagnosis = ?, ");
+            params.push(veterinarian_diagnosis);
+        }
+
+        if let Some(complications) = update_surgery.complications {
+            query_string.push_str("complications = ?, ");
+            params.push(complications);
+        }
+
+        if let Some(outcome) = update_surgery.outcome {
+            query_string.push_str("outcome = ?, ");
+            params.push(outcome);
+        }
+
+        if let Some(vet_id) = update_surgery.vet_id {
+            query_string.push_str("vet_id = ?, ");
+            params.push(vet_id);
+        }
+
+        if query_string.ends_with(", ") {
+            query_string.truncate(query_string.len() - 2);
+        }
+
+        query_string.push_str(" WHERE surgery_id = ?");
+        params.push(surgery_id.to_string());
+        let mut query = sqlx::query(&query_string);
+        for param in params {
+            query = query.bind(param);
+        }
+
+        let result = query.execute(&*self.db).await?;
+        Ok(result.rows_affected())
+    }
+
+    pub async fn update_service_instance(
+        &self,
+        update_service_instance: UpdateServiceInstance,
+        service_instance_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        let mut query_string = String::from("UPDATE service_instance SET ");
+        let mut params = Vec::new();
+
+        let mut tx = self.db.begin().await?;
+
+        if let Some(service_types) = update_service_instance.service_type {
+            sqlx::query("DELETE FROM service_type WHERE service_instance_id = ?")
+                .bind(&service_instance_id)
+                .execute(&mut *tx)
+                .await?;
+
+            for service_type in service_types {
+                sqlx::query(&self.create_service_instance_type)
+                    .bind(service_type.clone())
+                    .bind(service_instance_id.clone())
+                    .execute(&mut *tx)
+                    .await?;
+            }
+        }
+
+        tx.commit().await?;
+
+        if let Some(service_date) = update_service_instance.service_date {
+            query_string.push_str("service_date = ?, ");
+            params.push(service_date.to_string());
+        }
+
+        if let Some(service_reason) = update_service_instance.service_reason {
+            query_string.push_str("service_reason = ?, ");
+            params.push(service_reason);
+        }
+
+        if let Some(general_diagnosis) = update_service_instance.general_diagnosis {
+            query_string.push_str("general_diagnosis = ?, ");
+            params.push(general_diagnosis);
+        }
+
+        if let Some(requires_followup) = update_service_instance.requires_followup {
+            query_string.push_str("requires_followup = ?, ");
+            params.push(requires_followup.to_string());
+        }
+
+        if let Some(followup_date) = update_service_instance.followup_date {
+            query_string.push_str("followup_date = ?, ");
+            params.push(followup_date.to_string());
+        }
+
+        if query_string.ends_with(", ") {
+            query_string.truncate(query_string.len() - 2);
+        }
+
+        query_string.push_str(" WHERE service_instance_id = ?");
+        params.push(service_instance_id);
+
+        let mut query = sqlx::query(&query_string);
+        for param in params {
+            query = query.bind(param);
+        }
+
+        let result = query.execute(&*self.db).await?;
+
+        Ok(result.rows_affected())
     }
 }
