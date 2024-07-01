@@ -12,7 +12,10 @@ import ThemeSwitcher from '~/components/ui/theme-switcher/ThemeSwitcher.vue';
                 class="h-8 w-8" />
             <h1 class="text-2xl font-semibold">Paws and Claws</h1>
         </div>
-        <div>
+        <div class="flex items-center gap-4">
+            <nuxt-link to="/">
+                <Button variant="outline">Home</Button>
+            </nuxt-link>
             <ThemeSwitcher />
         </div>
     </nav>
