@@ -12,6 +12,7 @@ use crate::schemas::service_instance_schema::{
     ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
 
+
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
     pub create_service_instance_type: &'static str,
@@ -19,7 +20,6 @@ pub struct ServiceInstanceQueries {
     pub create_grooming: &'static str,
     pub create_preventive_care: &'static str,
     pub create_surgery: &'static str,
-    pub get_service_instance_of_pet: &'static str,
     pub get_specific_service_instance: &'static str,
     pub get_grooming_of_service_instance: &'static str,
     pub get_preventive_care_of_service_instance: &'static str,
@@ -39,7 +39,6 @@ impl ServiceInstanceQueries {
             service_instance_id) VALUES (?, ?, ?)"#,
             create_surgery: r#"INSERT INTO surgery (surgery_name, anesthesia_used, complications,
              outcome, service_instance_id, vet_id) VALUES (?, ?, ?, ?, ?, ?)"#,
-            get_service_instance_of_pet: r#"SELECT * FROM service_instance WHERE pet_id = ?"#,
             get_specific_service_instance: r#"SELECT * FROM service_instance WHERE service_instance_id = ?"#,
             get_grooming_of_service_instance: r#"SELECT * FROM grooming WHERE service_instance_id = ?"#,
             get_preventive_care_of_service_instance: r#"SELECT * FROM preventive_care WHERE service_instance_id = ?"#,
@@ -393,44 +392,6 @@ impl ServiceInstanceQueries {
         Ok(row.rows_affected())
     }
 
-    pub async fn add_grooming(
-        &self,
-        service_instance_id: String,
-        grooming_types: Vec<String>,
-    ) -> Result<u64, sqlx::Error> {
-        let mut total_rows_affected = 0;
-        for grooming_type in grooming_types {
-            let row = sqlx::query(
-                "INSERT INTO grooming (grooming_type, service_instance_id) VALUES \
-            (?, ?",
-            )
-            .bind(grooming_type)
-            .bind(&service_instance_id)
-            .execute(&*self.db)
-            .await?;
-            total_rows_affected += row.rows_affected();
-        }
-        Ok(total_rows_affected)
-    }
-
-    pub async fn add_preventive_care(
-        &self,
-        add_preventive_care_to_existing: AddPreventiveCareToExisting,
-        service_instance_id: String,
-    ) -> Result<u64, sqlx::Error> {
-        let mut total_rows_affected = 0;
-        for treatment in add_preventive_care_to_existing.treatment {
-            let row = sqlx::query(&self.create_preventive_care)
-                .bind(treatment)
-                .bind(add_preventive_care_to_existing.vet_id.clone())
-                .bind(service_instance_id.clone())
-                .execute(&*self.db)
-                .await?;
-            total_rows_affected += row.rows_affected();
-        }
-        Ok(total_rows_affected)
-    }
-
     pub async fn update_surgery(
         &self,
         update_surgery: UpdateSurgery,
@@ -568,5 +529,42 @@ impl ServiceInstanceQueries {
             .execute(&*self.db)
             .await?;
         Ok(row.rows_affected())
+    }
+
+    pub async fn add_preventive_care(
+        &self,
+        add_preventive_care_to_existing: AddPreventiveCareToExisting,
+        service_instance_id: String,
+    ) -> Result<u64, sqlx::Error> {
+        let mut total_rows_affected = 0;
+        for treatment in add_preventive_care_to_existing.treatment {
+            let row = sqlx::query(&self.create_preventive_care)
+                .bind(treatment)
+                .bind(add_preventive_care_to_existing.vet_id.clone())
+                .bind(service_instance_id.clone())
+                .execute(&*self.db)
+                .await?;
+            total_rows_affected += row.rows_affected();
+        }
+        Ok(total_rows_affected)
+    }
+    pub async fn add_grooming(
+        &self,
+        service_instance_id: String,
+        grooming_types: Vec<String>,
+    ) -> Result<u64, sqlx::Error> {
+        let mut total_rows_affected = 0;
+        for grooming_type in grooming_types {
+            let row = sqlx::query(
+                "INSERT INTO grooming (grooming_type, service_instance_id) VALUES \
+            (?, ?",
+            )
+            .bind(grooming_type)
+            .bind(&service_instance_id)
+            .execute(&*self.db)
+            .await?;
+            total_rows_affected += row.rows_affected();
+        }
+        Ok(total_rows_affected)
     }
 }

@@ -1,24 +1,29 @@
 use std::sync::Arc;
 
 use axum::{
-    routing::{delete, get, patch, post},
     Router,
+    routing::{delete, get, patch, post},
 };
 
-use crate::handlers::owner_handler::search_owner;
 use crate::{
+    AppState,
     handlers::{
         index_handler::health_check,
         index_handler::index,
         owner_handler::{add_owner, delete_owner, get_owner_and_pets, get_owners, update_owner},
         pet_handler::{add_pet, delete_pet, get_pets, update_pet},
         service_instance_handler::{
-            add_service_instance, get_pet_histories, get_specific_service_instance,
+            add_grooming_to_instance, add_preventive_care_to_instance, add_service_instance,
+            add_surgery_to_instance, delete_grooming_from_instance,
+            delete_preventive_care_from_instance, delete_service, delete_surgery_from_instance,
+            get_pet_histories, get_specific_service_instance, update_service_instance,
+            update_surgery_from_instance,
         },
         vet_handler::{add_vet, delete_vet, get_vet_lists, get_vets, update_vet},
     },
-    AppState,
 };
+use crate::handlers::owner_handler::search_owner;
+
 
 pub fn create_router(app_state: Arc<AppState>) -> Router {
     let owner_routes = Router::new()
@@ -48,6 +53,33 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
         .route(
             "/get_specific_service_instance/:service_instance_id",
             get(get_specific_service_instance),
+        )
+        .route(
+            "/update_service_instance/:service_instance_id",
+            patch(update_service_instance),
+        )
+        .route("/add_surgery_to_instance", post(add_surgery_to_instance))
+        .route("/add_grooming_to_instance", post(add_grooming_to_instance))
+        .route(
+            "/add_preventive_care_to_instance",
+            post(add_preventive_care_to_instance),
+        )
+        .route(
+            "/update_surgery_from_instance",
+            patch(update_surgery_from_instance),
+        )
+        .route("/delete_service/:service_id", delete(delete_service))
+        .route(
+            "/delete_grooming_from_instance",
+            delete(delete_grooming_from_instance),
+        )
+        .route(
+            "/delete_preventive_care_from_instance",
+            delete(delete_preventive_care_from_instance),
+        )
+        .route(
+            "/delete_surgery_from_instance",
+            delete(delete_surgery_from_instance),
         );
 
     Router::new()
