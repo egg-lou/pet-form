@@ -3,11 +3,13 @@ use std::sync::Arc;
 
 use sqlx::Row;
 
-use crate::models::service_instance_model::GetServicesHistoryModel;
+use crate::models::service_instance_model::{
+    GetServicesHistoryModel, GroomingModel, PreventiveCareModel, ServiceInstanceModel, SurgeryModel,
+};
+use crate::models::vet_model::VetModelForService;
 use crate::schemas::service_instance_schema::{
     AddPreventiveCare, AddSurgery, Grooming, PreventiveCare, ServiceInstance, Surgery,
 };
-
 
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -229,5 +231,111 @@ impl ServiceInstanceQueries {
         }
 
         Ok(services)
+    }
+    pub async fn get_specific_instance(
+        &self,
+        service_instance_id: String,
+    ) -> Result<ServiceInstanceModel, sqlx::Error> {
+        let row = sqlx::query(&self.get_specific_service_instance)
+            .bind(service_instance_id.clone())
+            .fetch_one(&*self.db)
+            .await?;
+
+        let service_instance = ServiceInstanceModel {
+            service_instance_id: row.get("service_instance_id"),
+            service_date: row.get("service_date"),
+            service_type: Vec::new(),
+            service_reason: row.get("service_reason"),
+            general_diagnosis: row.get("general_diagnosis"),
+            requires_followup: row.get("requires_followup"),
+            followup_date: row.get("followup_date"),
+            pet_id: row.get("pet_id"),
+            grooming: None,
+            preventive_care: None,
+            surgery: None,
+        };
+
+        let grooming_rows = sqlx::query(&self.get_grooming_of_service_instance)
+            .bind(&service_instance_id)
+            .fetch_all(&*self.db)
+            .await?;
+
+        let mut groomings = Vec::new();
+        for row in grooming_rows {
+            groomings.push(GroomingModel {
+                grooming_id: row.get("grooming_id"),
+                grooming_type: row.get("grooming_type"),
+            });
+        }
+
+        let preventive_care_rows = sqlx::query(&self.get_preventive_care_of_service_instance)
+            .bind(&service_instance_id)
+            .fetch_all(&*self.db)
+            .await?;
+
+        let mut preventive_cares = Vec::new();
+        for row in preventive_care_rows {
+            let vet_id: String = row.get("vet_id");
+            let vet_row = sqlx::query("SELECT * FROM veterinarian WHERE vet_id = ?")
+                .bind(&vet_id)
+                .fetch_one(&*self.db)
+                .await?;
+            let vet = VetModelForService {
+                vet_name: vet_row.get("vet_name"),
+                vet_email: vet_row.get("vet_email"),
+                vet_phone_number: vet_row.get("vet_phone_number"),
+                vet_license_number: vet_row.get("vet_license_number"),
+            };
+            preventive_cares.push(PreventiveCareModel {
+                preventive_care_id: row.get("preventive_care_id"),
+                treatment: row.get("treatment"),
+                vet,
+            });
+        }
+
+        let surgery_rows = sqlx::query(&self.get_surgery_of_service_instance)
+            .bind(&service_instance_id)
+            .fetch_all(&*self.db)
+            .await?;
+
+        let mut surgeries = Vec::new();
+        for row in surgery_rows {
+            let vet_id: String = row.get("vet_id");
+            let vet_row = sqlx::query("SELECT * FROM veterinarian WHERE vet_id = ?")
+                .bind(&vet_id)
+                .fetch_one(&*self.db)
+                .await?;
+            let vet = VetModelForService {
+                vet_name: vet_row.get("vet_name"),
+                vet_email: vet_row.get("vet_email"),
+                vet_phone_number: vet_row.get("vet_phone_number"),
+                vet_license_number: vet_row.get("vet_license_number"),
+            };
+            surgeries.push(SurgeryModel {
+                surgery_id: row.get("surgery_id"),
+                surgery_name: row.get("surgery_name"),
+                anesthesia_used: row.get("anesthesia_used"),
+                complications: row.get("complications"),
+                outcome: row.get("outcome"),
+                vet,
+            });
+        }
+
+        let service_instance = ServiceInstanceModel {
+            grooming: if groomings.is_empty() {
+                None
+            } else {
+                Some(groomings)
+            },
+            preventive_care: if preventive_cares.is_empty() {
+                None
+            } else {
+                Some(preventive_cares)
+            },
+            surgery: surgeries.into_iter().next(),
+            ..service_instance
+        };
+
+        Ok(service_instance)
     }
 }

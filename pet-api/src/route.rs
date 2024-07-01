@@ -1,23 +1,24 @@
 use std::sync::Arc;
 
 use axum::{
-    Router,
     routing::{delete, get, patch, post},
+    Router,
 };
 
+use crate::handlers::owner_handler::search_owner;
 use crate::{
-    AppState,
     handlers::{
         index_handler::health_check,
         index_handler::index,
         owner_handler::{add_owner, delete_owner, get_owner_and_pets, get_owners, update_owner},
         pet_handler::{add_pet, delete_pet, get_pets, update_pet},
-        service_instance_handler::{add_service_instance, get_pet_histories},
+        service_instance_handler::{
+            add_service_instance, get_pet_histories, get_specific_service_instance,
+        },
         vet_handler::{add_vet, delete_vet, get_vet_lists, get_vets, update_vet},
     },
+    AppState,
 };
-use crate::handlers::owner_handler::search_owner;
-
 
 pub fn create_router(app_state: Arc<AppState>) -> Router {
     let owner_routes = Router::new()
@@ -43,7 +44,11 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
 
     let service_instance_routes = Router::new()
         .route("/add_service_instance", post(add_service_instance))
-        .route("/get_pet_histories/:pet_id", get(get_pet_histories));
+        .route("/get_pet_histories/:pet_id", get(get_pet_histories))
+        .route(
+            "/get_specific_service_instance/:service_instance_id",
+            get(get_specific_service_instance),
+        );
 
     Router::new()
         .route("/api", get(index))

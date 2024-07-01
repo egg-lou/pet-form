@@ -2,15 +2,14 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
-use crate::AppState;
 use crate::db::queries::service_instance_queries::ServiceInstanceQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::service_instance_schema::AddServiceInstance;
-
+use crate::AppState;
 
 pub async fn add_service_instance(
     State(data): State<Arc<AppState>>,
@@ -54,6 +53,22 @@ pub async fn get_pet_histories(
     let service_instance_queries = ServiceInstanceQueries::new(Arc::new(data.db.clone()));
     match service_instance_queries
         .get_services_history_of_pet(limit as i32, offset as i32, pet_id)
+        .await
+    {
+        Ok(service_instance) => Ok((StatusCode::OK, Json(service_instance))),
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "error": e.to_string() })),
+        )),
+    }
+}
+pub async fn get_specific_service_instance(
+    Path(service_instance_id): Path<String>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let service_instance_queries = ServiceInstanceQueries::new(Arc::new(data.db.clone()));
+    match service_instance_queries
+        .get_specific_instance(service_instance_id)
         .await
     {
         Ok(service_instance) => Ok((StatusCode::OK, Json(service_instance))),
