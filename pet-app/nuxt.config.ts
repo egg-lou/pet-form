@@ -21,5 +21,6 @@ export default defineNuxtConfig({
             tailwindcss: {},
             autoprefixer: {}
         }
-    }
+    },
+    components: true,
 });

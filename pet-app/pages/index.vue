@@ -2,4 +2,6 @@
 const route = useRoute();
 </script>
 
-<template></template>
+<template>
+    <h1>Welcome to Paws and Claws Vet Clinic!</h1>
+</template>
