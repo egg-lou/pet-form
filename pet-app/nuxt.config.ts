@@ -22,5 +22,5 @@ export default defineNuxtConfig({
             autoprefixer: {}
         }
     },
-    components: true,
+    components: true
 });
