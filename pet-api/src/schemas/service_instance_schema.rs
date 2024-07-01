@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ServiceInstance {
     pub service_instance_id: String,
@@ -24,8 +23,8 @@ pub struct AddServiceInstance {
     pub requires_followup: bool,
     pub followup_date: Option<String>,
     pub grooming_type: Option<Vec<String>>,
-    pub treatment: Option<Vec<String>>,
-    pub surgery: Option<Surgery>,
+    pub preventive_care: Option<AddPreventiveCare>,
+    pub surgery: Option<AddSurgery>,
     pub pet_id: String,
 }
 
@@ -38,8 +37,8 @@ pub struct UpdateServiceInstance {
     pub requires_followup: Option<bool>,
     pub followup_date: Option<String>,
     pub grooming_type: Option<Vec<String>>,
-    pub treatment: Option<Vec<String>>,
-    pub surgery: Option<Surgery>,
+    pub preventive_care: Option<AddPreventiveCare>,
+    pub surgery: Option<AddSurgery>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -67,11 +66,27 @@ pub struct InsertPreventiveCare {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Surgery {
     pub surgery_id: Option<i32>,
-    pub surgery_type: String,
-    pub anesthesia_used: Option<String>,
-    pub veterinarian_diagnosis: Option<String>,
-    pub complications: Option<String>,
-    pub outcome: Option<String>,
+    pub surgery_name: String,
+    pub anesthesia_used: String,
+    pub veterinarian_diagnosis: String,
+    pub complications: String,
+    pub outcome: String,
     pub service_instance_id: String,
+    pub vet_id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct AddSurgery {
+    pub surgery_name: String,
+    pub anesthesia_used: String,
+    pub veterinarian_diagnosis: String,
+    pub complications: String,
+    pub outcome: String,
+    pub vet_id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct AddPreventiveCare {
+    pub treatment: Vec<String>,
     pub vet_id: String,
 }

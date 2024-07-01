@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::pet_model::PetModel;
 
-
 #[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
 pub struct OwnerModel {
     pub owner_id: String,

@@ -31,14 +31,6 @@ CREATE TABLE IF NOT EXISTS veterinarian (
     UNIQUE (vet_email, vet_license_number)
 );
 
-CREATE TABLE IF NOT EXISTS service_type (
-    service_type_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    service_type_name VARCHAR(50) NOT NULL
-    service_instance_id INT NOT NULL
-
-    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS service_instance (
     service_instance_id VARCHAR(36) PRIMARY KEY NOT NULL,
     service_date DATE NOT NULL,
@@ -48,6 +40,14 @@ CREATE TABLE IF NOT EXISTS service_instance (
 
     pet_id VARCHAR(36) NOT NULL,
     FOREIGN KEY (pet_id) REFERENCES pet(pet_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS service_type (
+    service_type_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    service_type_name VARCHAR(50) NOT NULL,
+    service_instance_id VARCHAR(36) NOT NULL,
+
+    FOREIGN KEY (service_instance_id) REFERENCES service_instance(service_instance_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS grooming (
