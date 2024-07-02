@@ -5,7 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pet-app/components/tables/owner-table.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/tables/pet-table.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/progress/Progress.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/progress/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/Table.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableBody.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableCaption.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableCell.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableEmpty.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableFooter.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableHead.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableHeader.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/TableRow.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/table/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/api/owner.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/owner.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/api/pet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/pet.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/components/form/owner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/owner-form.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/components/ui/navbar/Navbar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/ui/navbar/Navbar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/pages/registration/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/registration/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +38,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Vue Composition API Component" />
         <option value="TypeScript File" />
+        <option value="Vue Composition API Component" />
       </list>
     </option>
   </component>
@@ -84,6 +107,7 @@
       <workItem from="1719888786582" duration="53000" />
       <workItem from="1719888883439" duration="7746000" />
       <workItem from="1719904090964" duration="2891000" />
+      <workItem from="1719920793066" duration="9894000" />
     </task>
     <servers />
   </component>

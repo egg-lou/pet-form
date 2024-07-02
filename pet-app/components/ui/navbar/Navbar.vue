@@ -10,7 +10,7 @@ import ThemeSwitcher from '~/components/ui/theme-switcher/ThemeSwitcher.vue';
                 src="/img/icon.png"
                 alt="Paws and Claws"
                 class="h-8 w-8" />
-            <h1 class="text-2xl font-semibold">Paws and Claws</h1>
+            <h1 class="text-lg font-semibold">Paws and Claws</h1>
         </div>
         <div class="flex items-center gap-4">
             <ThemeSwitcher />
