@@ -6,6 +6,7 @@ import {
     CardFooter,
     CardDescription
 } from '~/components/ui/card';
+import {IndexService} from "~/api";
 const links = ref<{ name: string; href: string; description: string }[]>([
     {
         name: 'Add a New Record',
@@ -23,6 +24,23 @@ const links = ref<{ name: string; href: string; description: string }[]>([
     description: 'Access all the veterinarians in the clinic'
   }
 ]);
+
+const indexService = new IndexService();
+
+const fetchIndex = async () => {
+  const response = await indexService.getIndex();
+  console.log(response);
+}
+
+const fetchHealth = async () => {
+  const response = await indexService.getHealth();
+  console.log(response);
+}
+
+onMounted(() => {
+  fetchIndex();
+  fetchHealth();
+});
 </script>
 
 <template>
