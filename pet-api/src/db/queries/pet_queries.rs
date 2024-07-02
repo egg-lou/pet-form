@@ -1,5 +1,8 @@
 use std::sync::Arc;
 
+use crate::models::pet_model::{PetModel, PetModelResponse};
+
+
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
 }
@@ -34,10 +37,7 @@ impl PetQueries {
             .map(|done| done.rows_affected())
     }
 
-    pub async fn select_pet(
-        &self,
-        pet_id: String,
-    ) -> Result<crate::models::pet_model::PetModel, sqlx::Error> {
+    pub async fn select_pet(&self, pet_id: String) -> Result<PetModel, sqlx::Error> {
         sqlx::query_as("SELECT * FROM pet WHERE pet_id = ?")
             .bind(pet_id)
             .fetch_one(&*self.db)
@@ -48,12 +48,37 @@ impl PetQueries {
         &self,
         limit: i32,
         offset: i32,
-    ) -> Result<Vec<crate::models::pet_model::PetModel>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM pet ORDER by pet_type LIMIT ? OFFSET ?")
-            .bind(limit)
-            .bind(offset)
-            .fetch_all(&*self.db)
-            .await
+        search: Option<String>,
+    ) -> Result<Vec<PetModelResponse>, sqlx::Error> {
+        let mut query = String::from(
+            r#"
+    SELECT pet.*, owner.owner_name, owner.owner_email
+    FROM pet
+    INNER JOIN owner ON pet.owner_id = owner.owner_id
+    "#,
+        );
+
+        if let Some(search_term) = search {
+            query.push_str("WHERE pet_name LIKE ? ");
+            query.push_str("ORDER BY pet_type ");
+            query.push_str("LIMIT ? OFFSET ?");
+
+            sqlx::query_as::<_, PetModelResponse>(&query)
+                .bind(format!("%{}%", search_term))
+                .bind(limit)
+                .bind(offset)
+                .fetch_all(&*self.db)
+                .await
+        } else {
+            query.push_str("ORDER BY pet_type ");
+            query.push_str("LIMIT ? OFFSET ?");
+
+            sqlx::query_as::<_, PetModelResponse>(&query)
+                .bind(limit)
+                .bind(offset)
+                .fetch_all(&*self.db)
+                .await
+        }
     }
 
     pub async fn delete_pet(&self, pet_id: String) -> Result<u64, sqlx::Error> {

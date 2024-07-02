@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pet-app/api/pet.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/api/service-instance.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/owner_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/owner_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/pet_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/pet_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/service_instance_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/service_instance_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/vet_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/vet_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/route.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/route.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/api/owner.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/owner.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/composables/AxiosService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/composables/AxiosService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +83,7 @@
       <workItem from="1719832346361" duration="11980000" />
       <workItem from="1719888786582" duration="53000" />
       <workItem from="1719888883439" duration="7746000" />
-      <workItem from="1719904090964" duration="2411000" />
+      <workItem from="1719904090964" duration="2891000" />
     </task>
     <servers />
   </component>
