@@ -12,7 +12,6 @@ use crate::schemas::service_instance_schema::{
     ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
 
-
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
     pub create_service_instance_type: &'static str,

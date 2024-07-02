@@ -33,9 +33,7 @@ pub async fn get_pets(
             let response = json!({
                 "status":"success",
                 "message":"Pets fetched successfully",
-                "data": json!({
-                    "pets": pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-                })
+                "pets": pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
             });
             Ok((StatusCode::OK, Json(response)))
         }
@@ -70,9 +68,7 @@ pub async fn add_pet(
             let response = json!({
                 "status":"success",
                 "message":"Pet added successfully",
-                "data": json!({
-                    "pet": filter_db_record(&pet)
-                })
+                "pet": filter_db_record(&pet)
             });
             Ok((StatusCode::CREATED, Json(response)))
         }
@@ -154,9 +150,7 @@ pub async fn update_pet(
                     let response = json!({
                         "status": "success",
                         "message": "Pet updated successfully",
-                        "data": json!({
                             "pet": filter_db_record(&pet)
-                        })
                     });
 
                     Ok((StatusCode::OK, Json(response)))

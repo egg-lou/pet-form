@@ -19,4 +19,3 @@ import Owner from '~/components/form/owner.vue';
         </div>
     </div>
 </template>
-

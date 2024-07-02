@@ -34,9 +34,7 @@ pub async fn get_vets(
             let response = json!({
                 "status":"success",
                 "message":"Vets fetched successfully",
-                "data": json!({
-                    "vets": vets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-                })
+                "vets": vets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
             });
             Ok((StatusCode::OK, Json(response)))
         }
@@ -59,9 +57,7 @@ pub async fn get_vet_lists(
             let response = json!({
                 "status":"success",
                 "message":"Vets fetched successfully",
-                "data": json!({
-                    "vets": vets.into_iter().collect::<Vec<_>>()
-                })
+                "vets": vets.into_iter().collect::<Vec<_>>()
             });
             Ok((StatusCode::OK, Json(response)))
         }
@@ -94,9 +90,7 @@ pub async fn add_vet(
             let response = json!({
                 "status":"success",
                 "message":"Vet added successfully",
-                "data": json!({
-                    "vet": filter_db_record(&vet)
-                })
+                "vet": filter_db_record(&vet)
             });
             Ok((StatusCode::CREATED, Json(response)))
         }
@@ -175,7 +169,7 @@ pub async fn update_vet(
                     let response = json!({
                         "status": "success",
                         "message": "Vet updated successfully",
-                        "data": json!({ "vet": filter_db_record(&vet) })
+                        "vet": filter_db_record(&vet)
                     });
 
                     Ok((StatusCode::OK, Json(response)))

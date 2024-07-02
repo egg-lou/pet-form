@@ -2,18 +2,17 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
-use crate::AppState;
 use crate::db::queries::service_instance_queries::ServiceInstanceQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::service_instance_schema::{
     AddPreventiveCareToExisting, AddServiceInstance, AddSurgery, UpdateServiceInstance,
     UpdateSurgery,
 };
-
+use crate::AppState;
 
 pub async fn add_service_instance(
     State(data): State<Arc<AppState>>,

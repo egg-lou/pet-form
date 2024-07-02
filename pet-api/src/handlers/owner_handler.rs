@@ -40,9 +40,7 @@ pub async fn get_owners(
             let response = json!({
                 "status":"success",
                 "message":"Owners fetched successfully",
-                "data": json!({
-                    "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-                })
+                "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
             });
 
             Ok((StatusCode::OK, Json(response)))
@@ -65,10 +63,8 @@ pub async fn get_owner_and_pets(
             let response = json!({
                 "status":"success",
                 "message":"Owner and pets fetched successfully",
-                "data": json!({
                     "owner": filter_db_record(&owner_with_pets.owner),
                     "pets": owner_with_pets.pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-                })
             });
 
             Ok((StatusCode::OK, Json(response)))
@@ -107,9 +103,7 @@ pub async fn add_owner(
             let response = json!({
                 "status":"success",
                 "message":"Owner added successfully",
-                "data": json!({
                     "owner": filter_db_record(&owner),
-                })
             });
 
             Ok((StatusCode::CREATED, Json(response)))
@@ -163,9 +157,7 @@ pub async fn update_owner(
                     let response = json!({
                         "status":"success",
                         "message":"Owner updated successfully",
-                        "data": json!({
                             "owner": filter_db_record(&owner)
-                        })
                     });
 
                     Ok((StatusCode::OK, Json(response)))
@@ -233,9 +225,7 @@ pub async fn search_owner(
             let response = json!({
             "status": "success",
             "message": "Owners with the given name fetched successfully",
-            "data": json!({
-                "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-            })
+            "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
             });
             Ok((StatusCode::OK, Json(response)))
         }
