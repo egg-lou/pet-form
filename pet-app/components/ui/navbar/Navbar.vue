@@ -4,7 +4,7 @@ import ThemeSwitcher from '~/components/ui/theme-switcher/ThemeSwitcher.vue';
 
 <template>
     <nav
-        class="sticky top-0 flex h-16 w-full items-center justify-between border-b-2 border-slate-400 bg-transparent px-6 backdrop-blur dark:border-slate-700 md:px-16">
+        class="sticky top-0 flex h-16 w-full items-center justify-between px-8 py-12">
         <div class="flex items-center gap-4">
             <nuxt-img
                 src="/img/icon.png"
@@ -13,9 +13,6 @@ import ThemeSwitcher from '~/components/ui/theme-switcher/ThemeSwitcher.vue';
             <h1 class="text-2xl font-semibold">Paws and Claws</h1>
         </div>
         <div class="flex items-center gap-4">
-            <nuxt-link to="/">
-                <Button variant="outline">Home</Button>
-            </nuxt-link>
             <ThemeSwitcher />
         </div>
     </nav>

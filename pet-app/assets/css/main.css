@@ -81,6 +81,11 @@
     display: none;
 }
 
+.main {
+    @apply container;
+    min-height: calc(100vh - 4rem);
+}
+
 html {
     scroll-behavior: smooth;
     scrollbar-width: none;

@@ -20,8 +20,3 @@ import Owner from '~/components/form/owner.vue';
     </div>
 </template>
 
-<style scoped>
-.main {
-    min-height: calc(100vh - 4rem - 3rem);
-}
-</style>

@@ -8,15 +8,20 @@ import {
 } from '~/components/ui/card';
 const links = ref<{ name: string; href: string; description: string }[]>([
     {
-        name: 'Add a new record',
+        name: 'Add a New Record',
         href: '/registration',
         description: 'Add a new owner and their pets'
     },
     {
-        name: 'View records',
+        name: 'View Records',
         href: '/records',
         description: 'Access all the records for the owners and pets'
-    }
+    },
+  {
+    name: 'View Veterinarians',
+    href: '/veterinarians',
+    description: 'Access all the veterinarians in the clinic'
+  }
 ]);
 </script>
 
@@ -56,8 +61,3 @@ const links = ref<{ name: string; href: string; description: string }[]>([
     </div>
 </template>
 
-<style scoped>
-.main {
-    min-height: calc(100vh - 4rem - 3rem);
-}
-</style>

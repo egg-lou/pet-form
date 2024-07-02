@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import Navbar from '~/components/ui/navbar/Navbar.vue';
-import Footer from '~/components/ui/footer/Footer.vue';
+import SideBar from "~/components/ui/sidebar/SideBar.vue";
 </script>
 
 <template>
-    <div>
+    <div class="flex">
+      <div class="w-[3.5rem] ">
+        <SideBar />
+      </div>
+      <div class="w-full">
         <Navbar />
         <slot />
-        <Footer />
+      </div>
     </div>
 </template>
