@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use crate::models::pet_model::{PetModel, PetModelResponse};
 
-
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
 }

@@ -44,12 +44,31 @@ impl OwnerQueries {
         &self,
         limit: i32,
         offset: i32,
+        search: Option<String>,
     ) -> Result<Vec<OwnerModel>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM owner ORDER by owner_name LIMIT ? OFFSET ?")
-            .bind(limit)
-            .bind(offset)
-            .fetch_all(&*self.db)
-            .await
+        let mut query = String::from("SELECT * FROM owner ");
+
+        if let Some(search_term) = search {
+            query.push_str("WHERE owner_name LIKE ? ");
+            query.push_str("ORDER BY owner_name ");
+            query.push_str("LIMIT ? OFFSET ?");
+
+            sqlx::query_as::<_, OwnerModel>(&query)
+                .bind(format!("%{}%", search_term))
+                .bind(limit)
+                .bind(offset)
+                .fetch_all(&*self.db)
+                .await
+        } else {
+            query.push_str("ORDER BY owner_name ");
+            query.push_str("LIMIT ? OFFSET ?");
+
+            sqlx::query_as::<_, OwnerModel>(&query)
+                .bind(limit)
+                .bind(offset)
+                .fetch_all(&*self.db)
+                .await
+        }
     }
 
     pub async fn delete_owner(&self, owner_id: String) -> Result<u64, sqlx::Error> {
@@ -121,15 +140,5 @@ impl OwnerQueries {
                 .await?;
 
         Ok(OwnerWithPets { owner, pets })
-    }
-
-    pub async fn search_owner_by_name(
-        &self,
-        owner_name: String,
-    ) -> Result<Vec<OwnerModel>, sqlx::Error> {
-        sqlx::query_as::<_, OwnerModel>("SELECT * FROM owner WHERE owner_name LIKE ?")
-            .bind(format!("%{}%", owner_name))
-            .fetch_all(&*self.db)
-            .await
     }
 }

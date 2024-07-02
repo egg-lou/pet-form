@@ -5,7 +5,6 @@ use axum::{
     Router,
 };
 
-use crate::handlers::owner_handler::search_owner;
 use crate::{
     handlers::{
         index_handler::health_check,
@@ -28,7 +27,6 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
     let owner_routes = Router::new()
         .route("/get_owners", get(get_owners))
         .route("/get_owner_and_pets/:owner_id", get(get_owner_and_pets))
-        .route("/search_owner", get(search_owner))
         .route("/add_owner", post(add_owner))
         .route("/update_owner/:owner_id", patch(update_owner))
         .route("/delete_owner/:owner_id", delete(delete_owner));

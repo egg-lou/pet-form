@@ -2,17 +2,16 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
-use crate::AppState;
 use crate::db::queries::pet_queries::PetQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::pet_schema::{AddPet, UpdatePet};
-use crate::utils::{model_to_response::filter_db_record, validator::validate_field};
 use crate::utils::handle_duplicate_error::handle_duplicate_entry_error;
-
+use crate::utils::{model_to_response::filter_db_record, validator::validate_field};
+use crate::AppState;
 
 pub async fn get_pets(
     State(data): State<Arc<AppState>>,
@@ -24,10 +23,10 @@ pub async fn get_pets(
 
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
-    let search = opts.search.clone(); // Add this line to get the search term from the query parameters
+    let search = opts.search.clone();
 
     let pets = pet_queries
-        .select_all_pets(limit as i32, offset as i32, search) // Pass the search term to the select_all_pets function
+        .select_all_pets(limit as i32, offset as i32, search)
         .await;
 
     match pets {

@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
@@ -28,11 +27,12 @@ pub async fn get_owners(
 
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
+    let search = opts.search.clone();
 
     let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
 
     let owners = owner_queries
-        .select_all_owners(limit as i32, offset as i32)
+        .select_all_owners(limit as i32, offset as i32, search)
         .await;
 
     match owners {
@@ -196,38 +196,6 @@ pub async fn delete_owner(
                     Json(json!({"status": "error", "message": "Owner not found"})),
                 ))
             }
-        }
-        Err(e) => Err((
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"status": "error", "message": format!("{:?}", e)})),
-        )),
-    }
-}
-
-pub async fn search_owner(
-    Query(search_owner): Query<HashMap<String, String>>,
-    State(data): State<Arc<AppState>>,
-) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
-    let owner_name = match search_owner.get("owner_name") {
-        Some(name) => name,
-        None => {
-            return Err((
-                StatusCode::BAD_REQUEST,
-                Json(json!({"status": "error", "message": "Owner name is required"})),
-            ))
-        }
-    };
-
-    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
-
-    match owner_queries.search_owner_by_name(owner_name.clone()).await {
-        Ok(owners) => {
-            let response = json!({
-            "status": "success",
-            "message": "Owners with the given name fetched successfully",
-            "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
-            });
-            Ok((StatusCode::OK, Json(response)))
         }
         Err(e) => Err((
             StatusCode::INTERNAL_SERVER_ERROR,
