@@ -16,7 +16,6 @@ const links = ref<{ name: string; href: string; description: string }[]>([
         description: 'Access all the veterinarians in the clinic'
     }
 ]);
-
 </script>
 
 <template>

@@ -4,7 +4,10 @@ export class PetService extends AxiosService {
     url = '/api/pet';
     async getPets(search: string = '', page_number: number = 1) {
         try {
-            const response = await this.request('GET', `${this.url}/get_pets?search=${search}&page=${page_number}`);
+            const response = await this.request(
+                'GET',
+                `${this.url}/get_pets?search=${search}&page=${page_number}`
+            );
             const { data, status, statusText } = response;
             return { data, status, statusText };
         } catch (error) {
