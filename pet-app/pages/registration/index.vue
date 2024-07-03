@@ -11,7 +11,7 @@ import Owner from '~/components/form/owner-form.vue';
                     alt="Paws and Claws Vet Clinic"
                     width="60"
                     height="60" />
-                <h3 class="text-4xl font-bold">Register a new owner and pet</h3>
+                <h3 class="text-xl font-bold">Register a new owner and pet</h3>
             </div>
             <div class="w-full">
                 <Owner />

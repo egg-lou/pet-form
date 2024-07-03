@@ -33,7 +33,7 @@ const resetForm = () => {
 
 <template>
     <div class="py-4">
-        <h3 class="text-2xl font-semibold">Owner Information</h3>
+        <h3 class="text-lg font-semibold">Owner Information</h3>
         <form
             class="flex w-full flex-col items-center justify-center space-y-6 py-4"
             @submit="onSubmit">

@@ -26,7 +26,7 @@ const links = ref<{ name: string; href: string; description: string }[]>([
                 alt="Paws and Claws Vet Clinic"
                 width="70"
                 height="70" />
-            <h1 class="text-4xl font-bold">
+            <h1 class="text-2xl font-bold">
                 Welcome to Paws and Claws Vet Clinic!
             </h1>
         </div>
