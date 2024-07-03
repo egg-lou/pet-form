@@ -11,7 +11,8 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         'shadcn-nuxt',
         '@nuxtjs/color-mode',
-        '@nuxt/image'
+        '@nuxt/image',
+        '@pinia/nuxt'
     ],
     colorMode: {
         classSuffix: ''

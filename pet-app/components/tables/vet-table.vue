@@ -28,16 +28,18 @@ const handleDelete = async (vet_id: string) => {
         .deleteVet(vet_id)
         .then(() => {
             toast({
-                title: 'Deleted Successfully',
+                title: '✅ Deleted Successfully',
                 description: 'Vet has been deleted successfully'
             });
+            const refetch = useRefetchStore();
+            refetch.triggerRefetch();
         })
         .finally(() => {
             emit('deleteVet');
         })
         .catch((error) => {
             toast({
-                title: 'Failed to delete vet',
+                title: '❌Error',
                 description:
                     'Error occurred while deleting vet. Please try again later.' +
                     error
@@ -76,16 +78,9 @@ const headers = ref<string[]>([
                 <TableCell>{{ vet.vet_phone_number }}</TableCell>
                 <TableCell>{{ vet.vet_license_number }}</TableCell>
                 <TableCell class="flex gap-3">
-                    <Dialog>
-                        <DialogTrigger>
-                            <Button variant="outline">Edit</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <VetForm
-                                :mode="'update'"
-                                :vet_data="vet" />
-                        </DialogContent>
-                    </Dialog>
+                    <VetForm
+                        :mode="'update'"
+                        :vet_data="vet" />
                     <Dialog>
                         <DialogTrigger>
                             <Button variant="destructive">Delete</Button>

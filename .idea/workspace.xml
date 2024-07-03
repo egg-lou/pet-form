@@ -5,44 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pet-api/sql-queries/owner.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/sql-queries/pet.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/sql-queries/service-instance.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/sql-queries/vet.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/src/db/queries/statistic_queries.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/src/handlers/statistics_handler.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-api/src/models/statistics_model.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/form/vet-form.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/Dialog.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogClose.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogContent.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogDescription.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogFooter.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogHeader.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogScrollContent.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogTitle.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/DialogTrigger.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/dialog/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/types/owner-type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/types/pet-type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pet-app/types/vet-type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/stores/refetch.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/queries/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/queries/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/service_instance_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/service_instance_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/models/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/models/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/route.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/route.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/schemas/helper_schema.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/schemas/helper_schema.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/api/vet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/vet.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/form/owner-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/add-owner-form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/owner-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/owner-table.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/pet-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/pet-table.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/components/form/vet-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/vet-form.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/ui/sidebar/SideBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/ui/sidebar/SideBar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/registration/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/registration/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/nuxt.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/pages/veterinarians/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/veterinarians/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="Vue Composition API Component" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -126,7 +94,7 @@
       <workItem from="1719933227408" duration="366000" />
       <workItem from="1719977745160" duration="17406000" />
       <workItem from="1719999443445" duration="876000" />
-      <workItem from="1720007493889" duration="301000" />
+      <workItem from="1720007493889" duration="1769000" />
     </task>
     <servers />
   </component>
