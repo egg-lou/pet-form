@@ -43,10 +43,6 @@ const route = useRoute();
 </template>
 
 <style scoped>
-.icon {
-    @apply h-5 w-5;
-}
-
 Button {
     @apply rounded-lg;
 }

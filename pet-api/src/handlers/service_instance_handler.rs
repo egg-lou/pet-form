@@ -53,9 +53,11 @@ pub async fn get_pet_histories(
     let Query(opts) = opts.unwrap_or_default();
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
+    let start_date = opts.start_date.unwrap_or("".to_string());
+    let end_date = opts.end_date.unwrap_or("".to_string());
     let service_instance_queries = ServiceInstanceQueries::new(Arc::new(data.db.clone()));
     match service_instance_queries
-        .get_services_history_of_pet(limit as i32, offset as i32, pet_id)
+        .get_services_history_of_pet(limit as i32, offset as i32, pet_id, start_date, end_date)
         .await
     {
         Ok(service_instance) => Ok((StatusCode::OK, Json(service_instance))),

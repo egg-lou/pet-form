@@ -92,3 +92,6 @@ html {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+.icon {
+    @apply h-5 w-5;
+}

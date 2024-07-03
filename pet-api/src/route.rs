@@ -18,6 +18,7 @@ use crate::{
             get_pet_histories, get_specific_service_instance, update_service_instance,
             update_surgery_from_instance,
         },
+        statistics_handler::{counter_services, pet_type_visit_summery},
         vet_handler::{add_vet, delete_vet, get_vet_lists, get_vets, update_vet},
     },
     AppState,
@@ -79,9 +80,14 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
             delete(delete_surgery_from_instance),
         );
 
+    let statistics_routes = Router::new()
+        .route("/counter_services", get(counter_services))
+        .route("/get_pet_type_visit_summary", get(pet_type_visit_summery));
+
     Router::new()
         .route("/api", get(index))
         .route("/api/health_check", get(health_check))
+        .nest("/api/statistics", statistics_routes)
         .nest("/api/owner", owner_routes)
         .nest("/api/pet", pet_routes)
         .nest("/api/vet", vet_routes)

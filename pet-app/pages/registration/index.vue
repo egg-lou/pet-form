@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Owner from '~/components/form/owner-form.vue';
+import Owner from '~/components/form/add-owner-form.vue';
 </script>
 
 <template>

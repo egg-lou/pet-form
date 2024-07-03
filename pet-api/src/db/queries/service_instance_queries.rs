@@ -179,6 +179,8 @@ impl ServiceInstanceQueries {
         limit: i32,
         offset: i32,
         pet_id: String,
+        start_date: String,
+        end_date: String,
     ) -> Result<Vec<GetServicesHistoryModel>, sqlx::Error> {
         let rows = sqlx::query (
             r#"
@@ -186,11 +188,14 @@ impl ServiceInstanceQueries {
         FROM service_instance
         LEFT JOIN service_type ON service_instance.service_instance_id = service_type.service_instance_id
         WHERE service_instance.pet_id = ?
+        AND service_instance.service_date BETWEEN ? AND ?
         ORDER BY service_instance.service_instance_id
         LIMIT ? OFFSET ?
         "#,
         )
             .bind(pet_id)
+            .bind(start_date)
+            .bind(end_date)
             .bind(limit)
             .bind(offset)
             .fetch_all(&*self.db)
@@ -555,8 +560,7 @@ impl ServiceInstanceQueries {
         let mut total_rows_affected = 0;
         for grooming_type in grooming_types {
             let row = sqlx::query(
-                "INSERT INTO grooming (grooming_type, service_instance_id) VALUES \
-            (?, ?",
+                "INSERT INTO grooming (grooming_type, service_instance_id) VALUES  (?, ?)",
             )
             .bind(grooming_type)
             .bind(&service_instance_id)

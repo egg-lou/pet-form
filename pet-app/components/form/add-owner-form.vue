@@ -107,7 +107,7 @@ const resetForm = () => {
                 </Button>
                 <Button
                     type="submit"
-                    class="self-end"
+                    class="self-end dark:text-accent-foreground"
                     @click="onSubmit">
                     Submit
                 </Button>

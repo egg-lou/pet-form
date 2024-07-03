@@ -7,16 +7,7 @@ import {
     TableHeader,
     TableRow
 } from '~/components/ui/table';
-
-interface Pet {
-    pet_id: number;
-    pet_name: string;
-    pet_type: string;
-    pet_color: string;
-    pet_breed: string;
-    pet_weight: number;
-    owner_name: string;
-}
+import type { Pet } from '~/types/pet-type';
 
 const { pets } = defineProps({
     pets: Array as () => Pet[]

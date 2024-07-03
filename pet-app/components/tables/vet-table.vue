@@ -7,18 +7,43 @@ import {
     TableHeader,
     TableRow
 } from '~/components/ui/table';
-
-interface Vet {
-    vet_id: string;
-    vet_name: string;
-    vet_email: string;
-    vet_phone_number: string;
-    vet_license_number: string;
-}
-
+import {
+    DialogContent,
+    DialogTrigger,
+    Dialog,
+    DialogClose
+} from '~/components/ui/dialog';
+import type { Vet } from '~/types/vet-type';
+import { VetService } from '~/api/vet';
+import { toast } from '~/components/ui/toast';
+import VetForm from '~/components/form/vet-form.vue';
+const emit = defineEmits(['deleteVet']);
+const vetService = new VetService();
 const { vets } = defineProps({
     vets: Array as () => Vet[]
 });
+
+const handleDelete = async (vet_id: string) => {
+    await vetService
+        .deleteVet(vet_id)
+        .then(() => {
+            toast({
+                title: 'Deleted Successfully',
+                description: 'Vet has been deleted successfully'
+            });
+        })
+        .finally(() => {
+            emit('deleteVet');
+        })
+        .catch((error) => {
+            toast({
+                title: 'Failed to delete vet',
+                description:
+                    'Error occurred while deleting vet. Please try again later.' +
+                    error
+            });
+        });
+};
 
 const headers = ref<string[]>([
     'Vet ID',
@@ -28,8 +53,6 @@ const headers = ref<string[]>([
     'License Number',
     'Actions'
 ]);
-
-console.log(vets);
 </script>
 
 <template>
@@ -53,9 +76,41 @@ console.log(vets);
                 <TableCell>{{ vet.vet_phone_number }}</TableCell>
                 <TableCell>{{ vet.vet_license_number }}</TableCell>
                 <TableCell class="flex gap-3">
-                    <Button variant="outline">View</Button>
-                    <Button variant="outline">Edit</Button>
-                    <Button variant="destructive">Delete</Button>
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button variant="outline">Edit</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <VetForm
+                                :mode="'update'"
+                                :vet_data="vet" />
+                        </DialogContent>
+                    </Dialog>
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button variant="destructive">Delete</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <div
+                                class="flex flex-col items-center justify-center gap-4">
+                                <p>Are you sure you want to delete this vet?</p>
+                                <p>{{ vet.vet_name }}</p>
+                                <DialogClose as-child>
+                                    <Button
+                                        variant="outline"
+                                        class="w-full"
+                                        >Cancel</Button
+                                    >
+                                </DialogClose>
+                                <Button
+                                    variant="destructive"
+                                    class="w-full"
+                                    @click="handleDelete(vet.vet_id)"
+                                    >Confirm</Button
+                                >
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </TableCell>
             </TableRow>
         </TableBody>

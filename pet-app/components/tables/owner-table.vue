@@ -7,13 +7,7 @@ import {
     TableHeader,
     TableRow
 } from '~/components/ui/table';
-
-interface Owner {
-    owner_id: number;
-    owner_phone_number: string;
-    owner_email: string;
-    owner_address: string;
-}
+import type { Owner } from '~/types/owner-type';
 
 const { owners } = defineProps({
     owners: Array as () => Owner[]
