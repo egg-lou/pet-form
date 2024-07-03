@@ -7,27 +7,35 @@ const route = useRoute();
 
 <template>
     <aside
-        class="flex h-full w-full flex-col items-center justify-start gap-8 px-8 py-8 shadow-md bg-white/60 dark:bg-black/60">
+        class="flex h-full w-full flex-col items-center justify-start gap-8 bg-white/60 px-8 py-8 shadow-md dark:bg-black/60">
         <nuxt-link to="/">
-            <Button variant="ghost" :class="{'active-link': route.path === '/'}">
+            <Button
+                variant="ghost"
+                :class="{ 'active-link': route.path === '/' }">
                 <House class="icon" />
             </Button>
         </nuxt-link>
 
         <nuxt-link to="/registration">
-            <Button variant="ghost" :class="{'active-link': route.path === '/registration'}">
+            <Button
+                variant="ghost"
+                :class="{ 'active-link': route.path === '/registration' }">
                 <Plus class="icon" />
             </Button>
         </nuxt-link>
 
         <nuxt-link to="/records">
-            <Button variant="ghost" :class="{'active-link': route.path === '/records'}">
+            <Button
+                variant="ghost"
+                :class="{ 'active-link': route.path === '/records' }">
                 <Archive class="icon" />
             </Button>
         </nuxt-link>
 
         <nuxt-link to="/veterinarians">
-            <Button variant="ghost" :class="{'active-link': route.path === '/veterinarians'}">
+            <Button
+                variant="ghost"
+                :class="{ 'active-link': route.path === '/veterinarians' }">
                 <Stethoscope class="icon" />
             </Button>
         </nuxt-link>
@@ -40,7 +48,7 @@ const route = useRoute();
 }
 
 Button {
-  @apply rounded-lg
+    @apply rounded-lg;
 }
 
 .active-link {
