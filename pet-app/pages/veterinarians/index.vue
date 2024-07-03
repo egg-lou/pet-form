@@ -3,19 +3,32 @@ import { VetService } from '~/api/vet';
 import VetTable from '~/components/tables/vet-table.vue';
 import VetForm from '~/components/form/vet-form.vue';
 import { useRefetchStore } from '~/stores/refetch';
+import { ChevronRight, ChevronLeft } from 'lucide-vue-next';
 
 const vetService = new VetService();
 const vets = ref([]);
+const currentPage = ref(1);
+let totalPage: number;
 const fetchVets = async () => {
-    const response = await vetService.getVets();
+    const response = await vetService.getVets(currentPage.value);
     vets.value = response.data.vets;
+    totalPage = response.data.total_pages;
 };
 
 const refetch = useRefetchStore();
+const nextPage = () => {
+    currentPage.value++;
+    fetchVets();
+};
+
+const prevtPage = () => {
+    currentPage.value--;
+    fetchVets();
+};
 
 watch(
     () => refetch.needRefetch,
-    (newValue, oldValue) => {
+    (newValue) => {
         if (newValue) {
             fetchVets();
             refetch.needRefetch = false;
@@ -30,7 +43,7 @@ onMounted(async () => {
 <template>
     <div class="main">
         <Card>
-            <div class="h-[85vh] p-10">
+            <div class="h-[80vh] p-10">
                 <div class="flex items-center justify-between px-3 py-3">
                     <div class="flex items-center gap-4">
                         <nuxt-img
@@ -45,6 +58,18 @@ onMounted(async () => {
                 <VetTable
                     :vets="vets"
                     @delete-vet="fetchVets" />
+            </div>
+            <div class="flex items-center justify-end gap-3 self-end">
+                <Button
+                    :disabled="currentPage === 1"
+                    @click="prevtPage"
+                    ><ChevronLeft class="icon"
+                /></Button>
+                <Button
+                    :disabled="currentPage === totalPage"
+                    @click="nextPage"
+                    ><ChevronRight class="icon"
+                /></Button>
             </div>
         </Card>
     </div>

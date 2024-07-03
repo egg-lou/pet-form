@@ -25,6 +25,10 @@ pub async fn get_vets(
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
 
+    let total_vets = vet_queries.count_all_vets().await.unwrap_or_default();
+
+    let total_pages = (total_vets as f64 / limit as f64).ceil() as i32;
+
     let vets = vet_queries
         .select_all_vets(limit as i32, offset as i32)
         .await;
@@ -34,7 +38,8 @@ pub async fn get_vets(
             let response = json!({
                 "status":"success",
                 "message":"Vets fetched successfully",
-                "vets": vets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+                "vets": vets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>(),
+                "total_pages": total_pages,
             });
             Ok((StatusCode::OK, Json(response)))
         }

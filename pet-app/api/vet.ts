@@ -3,11 +3,16 @@ import type { AddVet, UpdateVet } from '~/types/vet-type';
 
 export class VetService extends AxiosService {
     url = '/api/vet';
-    async getVets() {
+    async getVets(page?: number) {
+        const limit = 10;
         try {
-            const response = await this.request('GET', `${this.url}/get_vets`);
+            const response = await this.request(
+                'GET',
+                `${this.url}/get_vets?page=${page}&limit=${limit}`
+            );
 
             const { data, status, statusText } = response;
+            console.log(response);
             return { data, status, statusText };
         } catch (error) {
             console.error(error);

@@ -1,5 +1,8 @@
 use std::sync::Arc;
 
+use sqlx::Row;
+
+
 pub struct VetQueries {
     db: Arc<sqlx::MySqlPool>,
 }
@@ -114,5 +117,12 @@ impl VetQueries {
         let result = query.execute(&*self.db).await?;
 
         Ok(result.rows_affected())
+    }
+
+    pub async fn count_all_vets(&self) -> Result<i64, sqlx::Error> {
+        sqlx::query(r#"SELECT COUNT(*) as count FROM veterinarian"#)
+            .fetch_one(&*self.db)
+            .await
+            .map(|row: sqlx::mysql::MySqlRow| row.get("count"))
     }
 }
