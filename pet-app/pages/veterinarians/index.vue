@@ -8,11 +8,11 @@ import { ChevronRight, ChevronLeft } from 'lucide-vue-next';
 const vetService = new VetService();
 const vets = ref([]);
 const currentPage = ref(1);
-let totalPage: number;
+const totalPage = ref(0);
 const fetchVets = async () => {
     const response = await vetService.getVets(currentPage.value);
     vets.value = response.data.vets;
-    totalPage = response.data.total_pages;
+    totalPage.value = response.data.total_pages;
 };
 
 const refetch = useRefetchStore();
@@ -59,18 +59,18 @@ onMounted(async () => {
                     :vets="vets"
                     @delete-vet="fetchVets" />
             </div>
-            <div class="flex items-center justify-end gap-3 self-end">
-                <Button
-                    :disabled="currentPage === 1"
-                    @click="prevtPage"
-                    ><ChevronLeft class="icon"
-                /></Button>
-                <Button
-                    :disabled="currentPage === totalPage"
-                    @click="nextPage"
-                    ><ChevronRight class="icon"
-                /></Button>
-            </div>
         </Card>
+      <div class="flex items-center justify-center py-4 gap-4" >
+        <Button
+            :disabled="currentPage === 1"
+            @click="prevtPage"
+        ><ChevronLeft class="icon"
+        /></Button>
+        <Button
+            :disabled="currentPage === totalPage"
+            @click="nextPage"
+        ><ChevronRight class="icon"
+        /></Button>
+      </div>
     </div>
 </template>

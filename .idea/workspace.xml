@@ -5,10 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialog.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogAction.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogCancel.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogContent.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogDescription.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogFooter.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogHeader.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogTitle.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/AlertDialogTrigger.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/alert-dialog/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/PaginationEllipsis.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/PaginationFirst.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/PaginationLast.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/PaginationNext.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/PaginationPrev.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pet-app/components/ui/pagination/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/queries/vet_queries.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/queries/vet_queries.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/handlers/vet_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/handlers/vet_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/api/vet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/vet.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/pages/veterinarians/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/veterinarians/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +106,8 @@
       <workItem from="1719933227408" duration="366000" />
       <workItem from="1719977745160" duration="17406000" />
       <workItem from="1719999443445" duration="876000" />
-      <workItem from="1720007493889" duration="5595000" />
+      <workItem from="1720007493889" duration="5680000" />
+      <workItem from="1720091262040" duration="2513000" />
     </task>
     <servers />
   </component>

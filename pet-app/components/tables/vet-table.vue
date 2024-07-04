@@ -8,11 +8,16 @@ import {
     TableRow
 } from '~/components/ui/table';
 import {
-    DialogContent,
-    DialogTrigger,
-    Dialog,
-    DialogClose
-} from '~/components/ui/dialog';
+  AlertDialog,
+    AlertDialogContent,
+    AlertDialogTrigger,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction
+} from "~/components/ui/alert-dialog";
 import type { Vet } from '~/types/vet-type';
 import { VetService } from '~/api/vet';
 import { toast } from '~/components/ui/toast';
@@ -81,31 +86,29 @@ const headers = ref<string[]>([
                     <VetForm
                         :mode="'update'"
                         :vet_data="vet" />
-                    <Dialog>
-                        <DialogTrigger>
-                            <Button variant="destructive">Delete</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <div
-                                class="flex flex-col items-center justify-center gap-4">
-                                <p>Are you sure you want to delete this vet?</p>
-                                <p>{{ vet.vet_name }}</p>
-                                <DialogClose as-child>
-                                    <Button
-                                        variant="outline"
-                                        class="w-full"
-                                        >Cancel</Button
-                                    >
-                                </DialogClose>
-                                <Button
-                                    variant="destructive"
-                                    class="w-full"
-                                    @click="handleDelete(vet.vet_id)"
-                                    >Confirm</Button
-                                >
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button variant="destructive">Delete</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to delete this vet?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Deleting <span class="font-bold">{{ vet.vet_name}}</span> will remove all the data associated with this vet.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction @click="handleDelete(vet.vet_id)">
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                      </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
             </TableRow>
         </TableBody>
