@@ -37,7 +37,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="main">
+    <div class="main container">
         <Card>
             <div class="h-[85vh] p-10">
                 <Tabs

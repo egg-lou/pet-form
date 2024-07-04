@@ -41,7 +41,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="main">
+    <div class="main container">
         <Card>
             <div class="h-[80vh] p-10">
                 <div class="flex items-center justify-between px-3 py-3">
@@ -60,17 +60,17 @@ onMounted(async () => {
                     @delete-vet="fetchVets" />
             </div>
         </Card>
-      <div class="flex items-center justify-center py-4 gap-4" >
-        <Button
-            :disabled="currentPage === 1"
-            @click="prevtPage"
-        ><ChevronLeft class="icon"
-        /></Button>
-        <Button
-            :disabled="currentPage === totalPage"
-            @click="nextPage"
-        ><ChevronRight class="icon"
-        /></Button>
-      </div>
+        <div class="flex items-center justify-center gap-4 py-4">
+            <Button
+                :disabled="currentPage === 1"
+                @click="prevtPage"
+                ><ChevronLeft class="icon"
+            /></Button>
+            <Button
+                :disabled="currentPage === totalPage"
+                @click="nextPage"
+                ><ChevronRight class="icon"
+            /></Button>
+        </div>
     </div>
 </template>
