@@ -48,9 +48,9 @@ const headers = ref<string[]>([
                 <TableCell>{{ pet.pet_weight }}</TableCell>
                 <TableCell>{{ pet.owner_name }}</TableCell>
                 <TableCell class="flex gap-3">
-                    <Button variant="outline">View</Button>
-                    <Button variant="outline">Edit</Button>
-                    <Button variant="destructive">Delete</Button>
+                  <nuxt-link :to="`/records/pet/${pet.pet_id}`">
+                    <Button variant="default" class="dark:text-accent-foreground">View</Button>
+                  </nuxt-link>
                 </TableCell>
             </TableRow>
         </TableBody>

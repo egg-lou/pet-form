@@ -15,6 +15,7 @@ const { owners } = defineProps({
 
 const headers = ref<string[]>([
     'Owner ID',
+    'Name',
     'Phone Number',
     'Email Address',
     'Address',
@@ -38,13 +39,14 @@ const headers = ref<string[]>([
                 v-for="owner in owners"
                 :key="owner.owner_id">
                 <TableCell>{{ owner.owner_id }}</TableCell>
+              <TableCell>{{ owner.owner_name }}</TableCell>
                 <TableCell>{{ owner.owner_phone_number }}</TableCell>
                 <TableCell>{{ owner.owner_email }}</TableCell>
                 <TableCell>{{ owner.owner_address }}</TableCell>
                 <TableCell class="flex gap-3">
-                    <Button variant="outline">View</Button>
-                    <Button variant="outline">Edit</Button>
-                    <Button variant="destructive">Delete</Button>
+                  <nuxt-link :to="`/records/owner/${owner.owner_id}`">
+                    <Button variant="default" class="dark:text-accent-foreground">View</Button>
+                  </nuxt-link>
                 </TableCell>
             </TableRow>
         </TableBody>

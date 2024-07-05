@@ -21,7 +21,7 @@ const nextPage = () => {
     fetchVets();
 };
 
-const prevtPage = () => {
+const prevPage = () => {
     currentPage.value--;
     fetchVets();
 };
@@ -63,7 +63,7 @@ onMounted(async () => {
         <div class="flex items-center justify-center gap-4 py-4">
             <Button
                 :disabled="currentPage === 1"
-                @click="prevtPage"
+                @click="prevPage"
                 ><ChevronLeft class="icon"
             /></Button>
             <Button

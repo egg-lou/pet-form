@@ -1,6 +1,9 @@
 use std::sync::Arc;
 
+use sqlx::Row;
+
 use crate::models::pet_model::{PetModel, PetModelResponse};
+
 
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -153,5 +156,20 @@ impl PetQueries {
         let result = query.execute(&*self.db).await?;
 
         Ok(result.rows_affected())
+    }
+
+    pub async fn count_all_pets(&self, search: Option<String>) -> Result<i64, sqlx::Error> {
+        let mut query = String::from("SELECT COUNT(*) as count FROM pet ");
+
+        if let Some(search_term) = search {
+            query.push_str(&format!("WHERE pet_name LIKE '%{}%' ", search_term));
+        }
+
+        let query = sqlx::query(&query);
+
+        query
+            .fetch_one(&*self.db)
+            .await
+            .map(|row: sqlx::mysql::MySqlRow| row.get("count"))
     }
 }

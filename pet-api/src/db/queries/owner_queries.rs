@@ -1,9 +1,12 @@
 use std::sync::Arc;
 
+use sqlx::Row;
+
 use crate::models::{
     owner_model::{OwnerModel, OwnerWithPets},
     pet_model::PetModel,
 };
+
 
 pub struct OwnerQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -140,5 +143,20 @@ impl OwnerQueries {
                 .await?;
 
         Ok(OwnerWithPets { owner, pets })
+    }
+
+    pub async fn count_all_owners(&self, search: Option<String>) -> Result<i64, sqlx::Error> {
+        let mut query = String::from("SELECT COUNT(*) as count FROM owner ");
+
+        if let Some(search_term) = search {
+            query.push_str(&format!("WHERE owner_name LIKE '%{}%' ", search_term));
+        }
+
+        let query = sqlx::query(&query);
+
+        query
+            .fetch_one(&*self.db)
+            .await
+            .map(|row: sqlx::mysql::MySqlRow| row.get("count"))
     }
 }

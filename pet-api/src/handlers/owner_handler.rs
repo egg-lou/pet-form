@@ -2,12 +2,12 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
+use axum::response::IntoResponse;
 use serde_json::json;
 
-use crate::utils::validator::validate_field;
 use crate::{
+    AppState,
     db::queries::owner_queries::OwnerQueries,
     schemas::{
         helper_schema::FilterOptions,
@@ -16,8 +16,9 @@ use crate::{
     utils::{
         handle_duplicate_error::handle_duplicate_entry_error, model_to_response::filter_db_record,
     },
-    AppState,
 };
+use crate::utils::validator::validate_field;
+
 
 pub async fn get_owners(
     opts: Option<Query<FilterOptions>>,
@@ -25,11 +26,15 @@ pub async fn get_owners(
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let Query(opts) = opts.unwrap_or_default();
 
+    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
     let search = opts.search.clone();
-
-    let owner_queries = OwnerQueries::new(Arc::new(data.db.clone()));
+    let total_owners = owner_queries
+        .count_all_owners(search.clone())
+        .await
+        .unwrap_or_default();
+    let total_pages = (total_owners as f64 / limit as f64).ceil() as i32;
 
     let owners = owner_queries
         .select_all_owners(limit as i32, offset as i32, search)
@@ -40,7 +45,9 @@ pub async fn get_owners(
             let response = json!({
                 "status":"success",
                 "message":"Owners fetched successfully",
-                "owners": owners.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+                "owners": owners.into_iter().map(|model| filter_db_record(&model))
+                .collect::<Vec<_>>(),
+                "total_pages": total_pages,
             });
 
             Ok((StatusCode::OK, Json(response)))

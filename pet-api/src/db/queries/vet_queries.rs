@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use sqlx::Row;
 
-
 pub struct VetQueries {
     db: Arc<sqlx::MySqlPool>,
 }

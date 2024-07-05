@@ -4,7 +4,7 @@ import type { AddVet, UpdateVet } from '~/types/vet-type';
 export class VetService extends AxiosService {
     url = '/api/vet';
     async getVets(page?: number) {
-        const limit = 10;
+        const limit = 5;
         try {
             const response = await this.request(
                 'GET',
@@ -12,7 +12,6 @@ export class VetService extends AxiosService {
             );
 
             const { data, status, statusText } = response;
-            console.log(response);
             return { data, status, statusText };
         } catch (error) {
             console.error(error);

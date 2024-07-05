@@ -27,7 +27,7 @@ const route = useRoute();
         <nuxt-link to="/records">
             <Button
                 variant="ghost"
-                :class="{ 'active-link': route.path === '/records' }">
+                :class="{ 'active-link': route.path.startsWith('/records') }">
                 <Archive class="icon" />
             </Button>
         </nuxt-link>

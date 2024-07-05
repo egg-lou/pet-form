@@ -24,6 +24,11 @@ pub async fn get_pets(
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
     let search = opts.search.clone();
+    let total_pets = pet_queries
+        .count_all_pets(search.clone())
+        .await
+        .unwrap_or_default();
+    let total_pages = (total_pets as f64 / limit as f64).ceil() as i32;
 
     let pets = pet_queries
         .select_all_pets(limit as i32, offset as i32, search)
@@ -34,7 +39,9 @@ pub async fn get_pets(
             let response = json!({
                 "status":"success",
                 "message":"Pets fetched successfully",
-                "pets": pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>()
+                "pets": pets.into_iter().map(|model| filter_db_record(&model)).collect::<Vec<_>>(),
+                "total_pages": total_pages,
+
             });
             Ok((StatusCode::OK, Json(response)))
         }
