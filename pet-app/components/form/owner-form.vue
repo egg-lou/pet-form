@@ -3,12 +3,12 @@ import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 import { useForm } from 'vee-validate';
 import { toast } from '~/components/ui/toast';
-import { h } from 'vue';
-import { useFormCheckStore } from '~/stores/formCheck';
 import { OwnerService } from '~/api/owner';
-
+import {DialogClose} from "~/components/ui/dialog";
+import { useRouter } from 'vue-router';
+import {PlusIcon} from "lucide-vue-next";
+const router = useRouter();
 const ownerService = new OwnerService();
-const formStore = useFormCheckStore();
 const ownerSchema = toTypedSchema(
     z.object({
         owner_name: z.string().min(5).max(80),
@@ -18,30 +18,22 @@ const ownerSchema = toTypedSchema(
     })
 );
 
-const props = defineProps();
-const emits = defineEmits(['update:modelValue', 'owner-added']);
-const ownerData = ref({});
-
-function updateOwnerData(key, value) {
-    ownerData.value = { ...ownerData.value, [key]: value };
-    emits('update:modelValue', ownerData.value);
-}
-
-const { isFieldDirty, handleSubmit, validate } = useForm({
+const { isFieldDirty, handleSubmit } = useForm({
     validationSchema: ownerSchema
 });
+
+let ownerId: string;
 
 const onSubmit = handleSubmit((values) => {
     ownerService
         .addOwner(values)
         .then((response) => {
-            const ownerId = response.data.owner_id;
+          ownerId = response.data.owner.owner_id
             toast({
                 title: '✅ Owner added successfully',
                 description: 'Owner has been added successfully'
             });
-            resetForm();
-            emits('owner-added', ownerId);
+            router.push({ path: `/records/owner/${ownerId}` });
         })
         .catch((error) => {
             toast({
@@ -53,23 +45,19 @@ const onSubmit = handleSubmit((values) => {
 
 const resetForm = () => {};
 
-watch(
-    () => formStore.triggerValidation,
-    async () => {
-        const result = await validate();
-        if (!result) {
-            toast({
-                title: '❌ Error',
-                description: 'Please fill in all required fields'
-            });
-        } else {
-            await onSubmit();
-        }
-    }
-);
 </script>
 
 <template>
+  <Dialog>
+    <DialogTrigger>
+      <Button
+          variant="outline"
+          class="rounded-lg bg-blue-500 text-accent-foreground transition-all duration-300 hover:bg-blue-600">
+        <PlusIcon class="h-6 w-6" />
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+
     <h3 class="text-lg font-semibold">Owner Information</h3>
     <form
         class="flex w-full flex-col items-center justify-center space-y-6 py-4"
@@ -85,9 +73,7 @@ watch(
                         type="text"
                         placeholder="Owner Name"
                         v-bind="componentField"
-                        @input="
-                            updateOwnerData('owner_name', $event.target.value)
-                        " />
+                         />
                 </FormControl>
                 <FormMessage />
             </FormItem>
@@ -103,9 +89,7 @@ watch(
                         type="text"
                         placeholder="Owner Email"
                         v-bind="componentField"
-                        @input="
-                            updateOwnerData('owner_email', $event.target.value)
-                        " />
+                         />
                 </FormControl>
                 <FormMessage />
             </FormItem>
@@ -121,12 +105,7 @@ watch(
                         type="text"
                         placeholder="Owner Phone Number"
                         v-bind="componentField"
-                        @input="
-                            updateOwnerData(
-                                'owner_phone_number',
-                                $event.target.value
-                            )
-                        " />
+                         />
                 </FormControl>
                 <FormMessage />
             </FormItem>
@@ -142,17 +121,31 @@ watch(
                         type="text"
                         placeholder="Owner Address"
                         v-bind="componentField"
-                        @input="
-                            updateOwnerData(
-                                'owner_address',
-                                $event.target.value
-                            )
-                        " />
+                         />
                 </FormControl>
                 <FormMessage />
             </FormItem>
         </FormField>
+      <div class="flex gap-4 self-end">
+        <Button
+            type="reset"
+            class="self-end"
+            variant="destructive"
+            @click="resetForm">
+          Reset
+        </Button>
+        <DialogClose as-child>
+          <Button
+              type="submit"
+              class="self-end dark:text-accent-foreground"
+              @click="onSubmit">
+            Submit
+          </Button>
+        </DialogClose>
+      </div>
     </form>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <style scoped></style>

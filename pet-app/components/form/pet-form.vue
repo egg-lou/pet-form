@@ -13,7 +13,6 @@ import {
     today
 } from '@internationalized/date';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
-
 import {
     Popover,
     PopoverContent,
@@ -26,13 +25,8 @@ import { Calendar } from '~/components/ui/calendar';
 import { placeholder } from '@babel/types';
 import { PetService } from '~/api/pet';
 
-const petService = new PetService();
-const formStore = useFormCheckStore();
-
-const props = defineProps({
-    mode: String,
-    pet_data: Object,
-    owner_id: String
+const { owner_id } = defineProps({
+  owner_id: String
 });
 
 const df = new DateFormatter('en-US', {
@@ -56,115 +50,53 @@ const petSchema = toTypedSchema(
 );
 
 const placeholder = ref();
-
+const petService = new PetService();
 const value = computed({
     get: () =>
         values.pet_birth_date ? parseDate(values.pet_birth_date) : undefined,
     set: (val) => val
 });
 
-const { isFieldDirty, handleSubmit, values, setFieldValue, validate } = useForm(
+const { isFieldDirty, handleSubmit, values, setFieldValue } = useForm(
     {
         validationSchema: petSchema
     }
 );
 
-onMounted(() => {
-    if (props.mode === 'update' && props.pet_data) {
-        setValues(props.pet_data);
-    }
-});
-
-watch(
-    () => props.owner_id,
-    (newOwnerId) => {
-        setFieldValue('owner_id', newOwnerId);
-    }
-);
-
 const onSubmit = handleSubmit((values) => {
-    if (props.mode === 'add') {
-        petService
-            .addPet(values)
-            .then((response) => {
-                toast({
-                    title: '✅ Pet added successfully',
-                    description: 'Pet has been added successfully'
-                });
-                resetForm();
-            })
-            .catch((error) => {
-                toast({
-                    title: '❌ Error',
-                    description: 'Failed to add pet' + error.message
-                });
-            });
-    } else {
-        petService
-            .updatePet(values)
-            .then((response) => {
-                toast({
-                    title: '✅ Pet updated successfully',
-                    description: 'Pet has been updated successfully'
-                });
-                resetForm();
-            })
-            .catch((error) => {
-                toast({
-                    title: '❌ Error',
-                    description: 'Failed to update pet' + error.message
-                });
-            });
-    }
+  values.owner_id =owner_id
+  petService.addPet(values)
+      .then(() => {
+          toast({
+              title: '✅ Pet added successfully',
+              description: 'Pet has been added successfully'
+          });
+          const fetch = useRefetchStore();
+          fetch.triggerRefetch();
+      }).catch((error) => {
+          toast({
+              title: '❌ Error',
+              description: 'Failed to add pet' + error.message
+          });
+      });
 });
 
 const resetForm = () => {
-    console.log('resetting form');
-};
-
-watch(
-    () => formStore.triggerValidation,
-    async () => {
-        const result = await validate();
-        if (!result) {
-            toast({
-                title: '❌ Error',
-                description: 'Please fill in all required fields'
-            });
-        } else {
-            await onSubmit();
-        }
-    }
-);
+  console.log('reset');
+}
 </script>
 
 <template>
-    <h3
-        v-if="props.mode !== 'add'"
-        class="text-lg font-semibold">
-        Pet Information
-    </h3>
+  <Dialog>
+   <DialogTrigger>
+    <Button class="dark:text-accent-foreground">Add Pet</Button>
+   </DialogTrigger>
+    <DialogContent>
+ <h3 class="font-semibold text-lg">Pet Information</h3>
     <form
-        class="flex w-full items-center justify-center gap-4 space-y-6 py-4"
+        class="flex w-full flex-col space-y-6 py-4"
         @submit="onSubmit">
-        <div>
-            <FormField
-                v-if="props.mode !== 'add'"
-                v-slot="{ componentField }"
-                name="owner_id"
-                :validate-on-blur="!isFieldDirty('owner_id')">
-                <FormItem class="w-full">
-                    <FormLabel>Owner ID: </FormLabel>
-                    <FormControl>
-                        <Input
-                            type="text"
-                            placeholder="Owner ID"
-                            v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            </FormField>
-
+        <div class="flex flex-col gap-4">
             <FormField
                 v-slot="{ componentField }"
                 name="pet_name"
@@ -213,7 +145,6 @@ watch(
                 </FormItem>
             </FormField>
         </div>
-        <div>
             <FormField
                 name="pet_birth_date"
                 :validate-on-blur="!isFieldDirty('pet_birth_date')">
@@ -238,7 +169,7 @@ watch(
                                     <CalendarIcon
                                         class="ms-auto h-4 w-4 opacity-50" />
                                 </Button>
-                                <input hidden />
+                                <input hidden >
                             </FormControl>
                         </PopoverTrigger>
                         <PopoverContent class="w-auto p-0">
@@ -291,12 +222,12 @@ watch(
                 type="radio"
                 name="pet_type">
                 <FormItem class="space-y-3">
-                    <FormLabel>Type: </FormLabel>
 
                     <FormControl>
                         <RadioGroup
-                            class="flex flex-col space-y-1"
+                            class="flex items-center gap-4 space-y-1"
                             v-bind="componentField">
+                          <FormLabel>Type: </FormLabel>
                             <FormItem
                                 class="flex items-center gap-x-3 space-y-0">
                                 <FormControl>
@@ -318,7 +249,6 @@ watch(
             </FormField>
 
             <div
-                v-if="props.mode !== 'add'"
                 class="flex gap-4 self-end py-4">
                 <Button
                     type="reset"
@@ -327,15 +257,18 @@ watch(
                     @click="resetForm">
                     Reset
                 </Button>
+              <DialogClose as-child>
                 <Button
                     type="submit"
                     class="self-end dark:text-accent-foreground"
                     @click="onSubmit">
                     Submit
                 </Button>
+              </DialogClose>
             </div>
-        </div>
     </form>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <style scoped></style>

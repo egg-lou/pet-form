@@ -16,14 +16,6 @@ const route = useRoute();
             </Button>
         </nuxt-link>
 
-        <nuxt-link to="/registration">
-            <Button
-                variant="ghost"
-                :class="{ 'active-link': route.path === '/registration' }">
-                <Plus class="icon" />
-            </Button>
-        </nuxt-link>
-
         <nuxt-link to="/records">
             <Button
                 variant="ghost"

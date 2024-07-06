@@ -36,11 +36,11 @@ const handleDelete = async (vet_id: string) => {
                 title: '✅ Deleted Successfully',
                 description: 'Vet has been deleted successfully'
             });
-            const refetch = useRefetchStore();
-            refetch.triggerRefetch();
+            const fetch = useRefetchStore();
+            fetch.triggerRefetch();
         })
         .finally(() => {
-            emit('deleteVet');
+          emit('deleteVet');
         })
         .catch((error) => {
             toast({

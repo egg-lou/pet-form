@@ -1,11 +1,6 @@
 <script setup lang="ts">
 const links = ref<{ name: string; href: string; description: string }[]>([
     {
-        name: 'Add a New Record',
-        href: '/registration',
-        description: 'Add a new owner and their pets'
-    },
-    {
         name: 'View Records',
         href: '/records',
         description: 'Access all the records for the owners and pets'
