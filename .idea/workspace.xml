@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/api/owner.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/owner.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/form/update-owner-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/update-owner-form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/owner/[owner_id].vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/owner/[owner_id].vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/components/form/pet-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/pet-form.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +97,7 @@
       <workItem from="1720266759364" duration="52000" />
       <workItem from="1720266818651" duration="3702000" />
       <workItem from="1720270717318" duration="2961000" />
-      <workItem from="1720347773692" duration="1767000" />
+      <workItem from="1720347773692" duration="2476000" />
     </task>
     <servers />
   </component>

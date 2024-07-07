@@ -3,8 +3,6 @@ import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 import { useForm } from 'vee-validate';
 import { toast } from '~/components/ui/toast';
-import { h } from 'vue';
-import { useFormCheckStore } from '~/stores/formCheck';
 import {
     CalendarDate,
     DateFormatter,
@@ -24,10 +22,9 @@ import { toDate } from 'radix-vue/date';
 import { Calendar } from '~/components/ui/calendar';
 import { placeholder } from '@babel/types';
 import { PetService } from '~/api/pet';
+import {DialogClose} from "radix-vue";
+const { owner_id } = useRoute().params;
 
-const { owner_id } = defineProps({
-  owner_id: String
-});
 
 const df = new DateFormatter('en-US', {
     dateStyle: 'long'
@@ -118,7 +115,7 @@ const resetForm = () => {
                 name="pet_weight"
                 :validate-on-blur="!isFieldDirty('pet_weight')">
                 <FormItem class="w-full">
-                    <FormLabel>Weight: </FormLabel>
+                    <FormLabel>Weight: (kg) </FormLabel>
                     <FormControl>
                         <Input
                             type="number"

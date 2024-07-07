@@ -154,10 +154,9 @@ v-for="(header, index) in headers"
                               <TableCell>{{ pet.pet_type}}</TableCell>
                               <TableCell>{{ pet.pet_breed}}</TableCell>
                               <TableCell class="flex gap-3">
-                                <PetForm
-                                  :mode="'update'"
-                                  :pet_data="pet"
-                                />
+                                <nuxt-link :to="`/records/pet/${pet.pet_id}`">
+                                <Button class="dark:text-accent-foreground">View</Button>
+                                </nuxt-link>
                                 <AlertDialog>
                                   <AlertDialogTrigger>
                                     <Button variant="destructive">Delete</Button>
