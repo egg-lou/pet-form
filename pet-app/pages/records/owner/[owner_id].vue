@@ -29,6 +29,7 @@ import PetForm from "~/components/form/pet-form.vue";
 const ownerService = new OwnerService();
 const  petService = new PetService();
 
+
 const fetch = useRefetchStore();
 const { owner_id } = useRoute().params;
 const owner = ref<Owner | null>(null);
@@ -129,7 +130,7 @@ onMounted(async () => {
                 <div class="border-2 p-5">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xl font-semibold">Pets:</h3>
-                      <PetForm :owner_id="owner_id"/>
+                      <PetForm />
                     </div>
                     <ScrollArea class="h-[25rem] w-full px-10 py-1">
                         <h3

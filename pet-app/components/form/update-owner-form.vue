@@ -6,10 +6,7 @@ import { OwnerService } from '~/api/owner';
 import { Dialog, DialogTrigger, DialogClose } from '~/components/ui/dialog';
 import { toast } from '~/components/ui/toast';
 
-const props = defineProps({
-    owner_id: String
-});
-
+const { owner_id} = useRoute().params;
 const ownerService = new OwnerService();
 const ownerSchema = toTypedSchema(
     z.object({
@@ -22,7 +19,7 @@ const ownerSchema = toTypedSchema(
 );
 
 const fetchOwnerAndPets = async () => {
-    const response = await ownerService.getOwnerAndPets(props.owner_id);
+    const response = await ownerService.getOwnerAndPets(owner_id);
     setValues(response.data.owner);
 };
 
@@ -32,14 +29,14 @@ const { isFieldDirty, handleSubmit, setValues } = useForm({
 
 const onSubmit = handleSubmit((values) => {
     ownerService
-        .updateOwner(values, props.owner_id)
+        .updateOwner(values, owner_id)
         .then(() => {
             toast({
                 title: '✅ Owner updated successfully',
                 description: 'Owner has been updated successfully'
             });
-            const refetch = useRefetchStore();
-            refetch.triggerRefetch();
+            const fetch = useRefetchStore();
+            fetch.triggerRefetch();
         })
         .catch((error) => {
             toast({

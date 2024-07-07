@@ -7,19 +7,8 @@
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/api/owner.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/owner.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/form/owner-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/owner-form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/form/pet-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/pet-form.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/components/form/update-owner-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/update-owner-form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/owner-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/owner-table.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/pet-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/pet-table.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/tables/vet-table.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/ui/sidebar/SideBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/ui/sidebar/SideBar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pet-app/pages/records/owner/[owner_id].vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/owner/[owner_id].vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/pet/[pet_id].vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/pet/[pet_id].vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/records/pet/service_instance/[service_instance_id].vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/pages/records/pet/service_instance/[service_instance_id].vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/pages/registration/index.vue" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +98,8 @@
       <workItem from="1720265941884" duration="777000" />
       <workItem from="1720266759364" duration="52000" />
       <workItem from="1720266818651" duration="3702000" />
+      <workItem from="1720270717318" duration="2961000" />
+      <workItem from="1720347773692" duration="1767000" />
     </task>
     <servers />
   </component>
