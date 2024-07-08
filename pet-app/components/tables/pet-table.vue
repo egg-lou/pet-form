@@ -14,8 +14,10 @@ const { pets } = defineProps({
 });
 
 const headers = ref<string[]>([
+    'ID',
     'Name',
     'Type',
+    'Breed',
     'Owner Name',
     'Actions'
 ]);
@@ -36,8 +38,10 @@ const headers = ref<string[]>([
             <TableRow
                 v-for="pet in pets"
                 :key="pet.pet_id">
+              <TableCell>{{ pet.pet_id }}</TableCell>
                 <TableCell>{{ pet.pet_name }}</TableCell>
                 <TableCell>{{ pet.pet_type }}</TableCell>
+              <TableCell>{{ pet.pet_breed }}</TableCell>
                 <TableCell>{{ pet.owner_name }}</TableCell>
                 <TableCell class="flex gap-3">
                     <nuxt-link :to="`/records/pet/${pet.pet_id}`">

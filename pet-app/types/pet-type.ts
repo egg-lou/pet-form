@@ -6,4 +6,6 @@ export interface Pet {
     pet_breed: string;
     pet_weight: number;
     owner_name: string;
+    owner_email: string;
+    pet_birth_date: string;
 }

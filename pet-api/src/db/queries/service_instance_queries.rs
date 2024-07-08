@@ -12,6 +12,7 @@ use crate::schemas::service_instance_schema::{
     ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
 
+
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
     pub create_service_instance_type: &'static str,
@@ -174,14 +175,25 @@ impl ServiceInstanceQueries {
             },
         })
     }
+
+    pub async fn check_pet_exists(&self, pet_id: &str) -> Result<bool, sqlx::Error> {
+        let result = sqlx::query("SELECT EXISTS(SELECT 1 FROM pet WHERE pet_id = ?) AS `exists`")
+            .bind(pet_id)
+            .fetch_one(&*self.db)
+            .await?
+            .try_get::<bool, _>("exists")?;
+
+        Ok(result)
+    }
     pub async fn get_services_history_of_pet(
         &self,
-        limit: i32,
-        offset: i32,
         pet_id: String,
         start_date: String,
         end_date: String,
     ) -> Result<Vec<GetServicesHistoryModel>, sqlx::Error> {
+        if !self.check_pet_exists(&pet_id).await? {
+            return Err(sqlx::Error::RowNotFound);
+        }
         let rows = sqlx::query (
             r#"
         SELECT service_instance.*, service_type.service_type_name
@@ -190,14 +202,11 @@ impl ServiceInstanceQueries {
         WHERE service_instance.pet_id = ?
         AND service_instance.service_date BETWEEN ? AND ?
         ORDER BY service_instance.service_instance_id
-        LIMIT ? OFFSET ?
         "#,
         )
             .bind(pet_id)
-            .bind(start_date)
-            .bind(end_date)
-            .bind(limit)
-            .bind(offset)
+            .bind(start_date.clone())
+            .bind(end_date.clone())
             .fetch_all(&*self.db)
             .await?;
 

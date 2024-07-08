@@ -7,7 +7,6 @@ use crate::models::{
     pet_model::PetModel,
 };
 
-
 pub struct OwnerQueries {
     db: Arc<sqlx::MySqlPool>,
 }

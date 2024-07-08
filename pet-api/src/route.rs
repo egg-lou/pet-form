@@ -10,7 +10,7 @@ use crate::{
         index_handler::health_check,
         index_handler::index,
         owner_handler::{add_owner, delete_owner, get_owner_and_pets, get_owners, update_owner},
-        pet_handler::{add_pet, delete_pet, get_pets, update_pet},
+        pet_handler::{add_pet, delete_pet, get_pet, get_pets, update_pet},
         service_instance_handler::{
             add_grooming_to_instance, add_preventive_care_to_instance, add_service_instance,
             add_surgery_to_instance, delete_grooming_from_instance,
@@ -33,6 +33,7 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
         .route("/delete_owner/:owner_id", delete(delete_owner));
 
     let pet_routes = Router::new()
+        .route("/get_pet/:pet_id", get(get_pet))
         .route("/get_pets", get(get_pets))
         .route("/add_pet", post(add_pet))
         .route("/update_pet/:pet_id", patch(update_pet))

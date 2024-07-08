@@ -60,4 +60,18 @@ export class PetService extends AxiosService {
             return await Promise.reject(error);
         }
     }
+
+    async getPet(pet_id) {
+        try {
+            const response = await this.request(
+                'GET',
+                `${this.url}/get_pet/${pet_id}`
+            );
+            const { data, status, statusText } = response;
+            return { data, status, statusText };
+        } catch (error) {
+            console.error(error);
+            return await Promise.reject(error);
+        }
+    }
 }

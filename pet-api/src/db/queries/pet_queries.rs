@@ -172,4 +172,21 @@ impl PetQueries {
             .await
             .map(|row: sqlx::mysql::MySqlRow| row.get("count"))
     }
+
+    pub async fn select_pet_details(
+        &self,
+        pet_id: String,
+    ) -> Result<PetModelResponse, sqlx::Error> {
+        let query = r#"
+        SELECT pet.*, owner.*
+        FROM pet
+        INNER JOIN owner ON pet.owner_id = owner.owner_id
+        WHERE pet.pet_id = ?
+        "#;
+
+        sqlx::query_as::<_, PetModelResponse>(query)
+            .bind(pet_id)
+            .fetch_one(&*self.db)
+            .await
+    }
 }

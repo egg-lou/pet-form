@@ -2,16 +2,17 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
+use axum::response::IntoResponse;
 use serde_json::json;
 
+use crate::AppState;
 use crate::db::queries::pet_queries::PetQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::pet_schema::{AddPet, UpdatePet};
-use crate::utils::handle_duplicate_error::handle_duplicate_entry_error;
 use crate::utils::{model_to_response::filter_db_record, validator::validate_field};
-use crate::AppState;
+use crate::utils::handle_duplicate_error::handle_duplicate_entry_error;
+
 
 pub async fn get_pets(
     State(data): State<Arc<AppState>>,
@@ -171,6 +172,28 @@ pub async fn update_pet(
         }
         Err(e) => Err((
             StatusCode::NOT_FOUND,
+            Json(json!({"status": "error", "message": format!("{:?}", e)})),
+        )),
+    }
+}
+
+pub async fn get_pet(
+    Path(pet_id): Path<String>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let pet_queries = PetQueries::new(Arc::new(data.db.clone()));
+    match pet_queries.select_pet_details(pet_id).await {
+        Ok(pet) => {
+            let response = json!({
+                "status":"success",
+                "message":"Pet fetched successfully",
+                "pet": filter_db_record(&pet)
+            });
+
+            Ok((StatusCode::OK, Json(response)))
+        }
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
             Json(json!({"status": "error", "message": format!("{:?}", e)})),
         )),
     }
