@@ -6,7 +6,7 @@ import { OwnerService } from '~/api/owner';
 import { Dialog, DialogTrigger, DialogClose } from '~/components/ui/dialog';
 import { toast } from '~/components/ui/toast';
 
-const { owner_id} = useRoute().params;
+const { owner_id } = useRoute().params;
 const ownerService = new OwnerService();
 const ownerSchema = toTypedSchema(
     z.object({

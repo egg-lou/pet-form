@@ -4,7 +4,7 @@ import { PetService } from '~/api/pet';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-vue-next';
 import PetTable from '~/components/tables/pet-table.vue';
 import OwnerTable from '~/components/tables/owner-table.vue';
-import OwnerForm from "~/components/form/owner-form.vue";
+import OwnerForm from '~/components/form/owner-form.vue';
 
 const ownerService = new OwnerService();
 const petService = new PetService();
@@ -46,12 +46,15 @@ const prevPage = () => {
 const fetch = useRefetchStore();
 watch(activeTab, fetchData);
 
-watch(() => fetch.needRefetch, (newValue) => {
-    if (newValue) {
-        fetchData();
-        fetch.needRefetch = false;
+watch(
+    () => fetch.needRefetch,
+    (newValue) => {
+        if (newValue) {
+            fetchData();
+            fetch.needRefetch = false;
+        }
     }
-})
+);
 
 onMounted(async () => {
     await fetchData();
@@ -63,25 +66,25 @@ onMounted(async () => {
         <Card>
             <div class="h-[80vh] p-10">
                 <div class="mb-2 flex items-center justify-between px-3 py-3">
-                  <div class="flex items-center justify-between w-full">
-                    <div class="flex items-center gap-4">
-                        <nuxt-img
-                            src="/img/icon.png"
-                            alt="Paws and Claws Vet Clinic"
-                            width="50"
-                            height="50" />
-                        <h3
-                            v-if="activeTab === 'owners'"
-                            class="text-xl font-semibold">
-                        Owners
-                        </h3>
-                        <h3
-                            v-else
-                            class="text-xl font-semibold">
-                            Pets
-                        </h3>
-                    </div>
-                    <OwnerForm v-if="activeTab === 'owners'"/>
+                    <div class="flex w-full items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <nuxt-img
+                                src="/img/icon.png"
+                                alt="Paws and Claws Vet Clinic"
+                                width="50"
+                                height="50" />
+                            <h3
+                                v-if="activeTab === 'owners'"
+                                class="text-xl font-semibold">
+                                Owners
+                            </h3>
+                            <h3
+                                v-else
+                                class="text-xl font-semibold">
+                                Pets
+                            </h3>
+                        </div>
+                        <OwnerForm v-if="activeTab === 'owners'" />
                     </div>
                 </div>
                 <Tabs

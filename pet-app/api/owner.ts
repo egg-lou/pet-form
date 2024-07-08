@@ -62,9 +62,7 @@ export class OwnerService extends AxiosService {
         }
     }
 
-    async getOwnerAndPets(
-        owner_id: string
-    ) {
+    async getOwnerAndPets(owner_id: string) {
         try {
             const response = await this.request(
                 'GET',

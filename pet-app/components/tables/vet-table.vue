@@ -40,7 +40,7 @@ const handleDelete = async (vet_id: string) => {
             fetch.triggerRefetch();
         })
         .finally(() => {
-          emit('deleteVet');
+            emit('deleteVet');
         })
         .catch((error) => {
             toast({

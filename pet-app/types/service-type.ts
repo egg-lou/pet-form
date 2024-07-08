@@ -1,4 +1,4 @@
-export interface ServiceContext  {
+export interface ServiceContext {
     followup_date: string | null;
     general_diagnosis: string;
     requires_followup: boolean;

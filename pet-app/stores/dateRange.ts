@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
+import { defineStore } from 'pinia';
 
-export const useDateRangeStore =defineStore('dateRange', {
+export const useDateRangeStore = defineStore('dateRange', {
     state: () => ({
         start: '',
         end: ''
@@ -11,4 +11,4 @@ export const useDateRangeStore =defineStore('dateRange', {
             this.end = end;
         }
     }
-})
+});

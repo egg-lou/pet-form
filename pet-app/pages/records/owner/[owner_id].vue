@@ -1,34 +1,33 @@
 <script setup lang="ts">
 import { OwnerService } from '~/api/owner';
-import { PetService} from "~/api/pet";
+import { PetService } from '~/api/pet';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow
 } from '~/components/ui/table';
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTrigger,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogTrigger,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction
 } from '~/components/ui/alert-dialog';
 import type { Owner } from '~/types/owner-type';
 import type { Pet } from '~/types/pet-type';
 import { toast } from '~/components/ui/toast';
 import { useRefetchStore } from '~/stores/refetch';
 import UpdateOwnerForm from '~/components/form/update-owner-form.vue';
-import PetForm from "~/components/form/pet-form.vue";
+import PetForm from '~/components/form/pet-form.vue';
 const ownerService = new OwnerService();
-const  petService = new PetService();
-
+const petService = new PetService();
 
 const fetch = useRefetchStore();
 const { owner_id } = useRoute().params;
@@ -44,12 +43,7 @@ const fetchOwnerAndPets = async () => {
     isDataReady.value = true;
 };
 
-const headers = ref<string[]>([
-  'Name',
-  'Type',
-  'Breed',
-  'Actions'
-]);
+const headers = ref<string[]>(['ID','Name', 'Type', 'Breed', 'Actions']);
 
 const deletePet = async (pet_id: string) => {
     await petService
@@ -69,8 +63,7 @@ const deletePet = async (pet_id: string) => {
                     error
             });
         });
-}
-
+};
 
 watch(
     () => fetch.needRefetch,
@@ -130,7 +123,7 @@ onMounted(async () => {
                 <div class="border-2 p-5">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xl font-semibold">Pets:</h3>
-                      <PetForm />
+                        <PetForm />
                     </div>
                     <ScrollArea class="h-[23.5rem] w-full px-10 py-1">
                         <h3
@@ -138,57 +131,76 @@ onMounted(async () => {
                             class="text-center">
                             No registered pets.
                         </h3>
-                      <Table v-if="pets.length > 0">
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead
-v-for="(header, index) in headers"
-                            :key="index">
-                              {{header}}
-                            </TableHead>
-                          </TableRow>
-                        </TableHeader>
-                          <TableBody>
-                            <TableRow v-for="pet in pets" :key="pet.pet_id">
-                              <TableCell>{{ pet.pet_name}}</TableCell>
-                              <TableCell>{{ pet.pet_type}}</TableCell>
-                              <TableCell>{{ pet.pet_breed}}</TableCell>
-                              <TableCell class="flex gap-3">
-                                <nuxt-link :to="`/records/pet/${pet.pet_id}`">
-                                <Button class="dark:text-accent-foreground">View</Button>
-                                </nuxt-link>
-                                <AlertDialog>
-                                  <AlertDialogTrigger>
-                                    <Button variant="destructive">Delete</Button>
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>
-                                        Are you sure you want to delete this pet?
-                                      </AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        Deleting
-                                        <span class="font-bold">{{
-                                          pet.pet_name
-                                        }}</span>
-                                        will remove all the data associated with
-                                        this pet.
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                      <AlertDialogCancel> Cancel </AlertDialogCancel>
-                                      <AlertDialogAction
-                                        @click="deletePet(pet.pet_id)"
-                                      >
-                                        Delete
-                                      </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialog>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                      </Table>
+                        <Table v-if="pets.length > 0">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead
+                                        v-for="(header, index) in headers"
+                                        :key="index">
+                                        {{ header }}
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow
+                                    v-for="pet in pets"
+                                    :key="pet.pet_id">
+                                  <TableCell>{{ pet.pet_id }}</TableCell>
+                                    <TableCell>{{ pet.pet_name }}</TableCell>
+                                    <TableCell>{{ pet.pet_type }}</TableCell>
+                                    <TableCell>{{ pet.pet_breed }}</TableCell>
+                                    <TableCell class="flex gap-3">
+                                        <nuxt-link
+                                            :to="`/records/pet/${pet.pet_id}`">
+                                            <Button
+                                                class="dark:text-accent-foreground"
+                                                >View</Button
+                                            >
+                                        </nuxt-link>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger>
+                                                <Button variant="destructive"
+                                                    >Delete</Button
+                                                >
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>
+                                                        Are you sure you want to
+                                                        delete this pet?
+                                                    </AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Deleting
+                                                        <span
+                                                            class="font-bold"
+                                                            >{{
+                                                                pet.pet_name
+                                                            }}</span
+                                                        >
+                                                        will remove all the data
+                                                        associated with this
+                                                        pet.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>
+                                                        Cancel
+                                                    </AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                        @click="
+                                                            deletePet(
+                                                                pet.pet_id
+                                                            )
+                                                        ">
+                                                        Delete
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </ScrollArea>
                 </div>
             </div>
