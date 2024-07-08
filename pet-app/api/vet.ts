@@ -65,10 +65,10 @@ export class VetService extends AxiosService {
 
     async vetLists() {
         try {
-            const response = await  this.request(
+            const response = await this.request(
                 'GET',
                 `${this.url}/get_vet_lists`
-            )
+            );
             const { data, status, statusText } = response;
             return { data, status, statusText };
         } catch (error) {

@@ -36,4 +36,19 @@ export class ServiceInstanceService extends AxiosService {
             return await Promise.reject(error);
         }
     }
+    async addServiceInstance(service_instance: any) {
+        try {
+            const response = await this.request(
+                'POST',
+                `${this.url}/add_service_instance`,
+                service_instance
+            );
+
+            const { data, status, statusText } = response;
+            return { data, status, statusText };
+        } catch (error) {
+            console.error(error);
+            return await Promise.reject(error);
+        }
+    }
 }

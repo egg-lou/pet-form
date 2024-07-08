@@ -8,12 +8,12 @@ export const serviceTypes = [
         label: 'Grooming'
     },
     {
-        id: 'Surgery',
-        label: 'Surgery'
-    },
-    {
         id: 'Preventive Care',
         label: 'Preventive Care'
+    },
+    {
+        id: 'Surgery',
+        label: 'Surgery'
     }
 ];
 
