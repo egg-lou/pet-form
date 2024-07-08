@@ -19,3 +19,8 @@ export interface UpdateVet {
     vet_phone_number?: string;
     vet_license_number?: string;
 }
+
+export interface VetList {
+    vet_id: string;
+    vet_name: string;
+}

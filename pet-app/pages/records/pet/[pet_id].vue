@@ -7,7 +7,7 @@ import type { ServiceContext } from '~/types/service-type';
 import DateRange from '~/components/calendars/date-range.vue';
 import { useDateRangeStore } from '~/stores/dateRange';
 import { toast } from '~/components/ui/toast';
-import UpdatePetForm from "~/components/form/update-pet-form.vue";
+import UpdatePetForm from '~/components/form/update-pet-form.vue';
 const petService = new PetService();
 const serviceInstance = new ServiceInstanceService();
 const { pet_id } = useRoute().params;
@@ -65,11 +65,11 @@ watch(
 watch(
     () => fetch.needRefetch,
     (newValue) => {
-      if (newValue) {
-        fetchPet();
-        fetchServiceInstances();
-        fetch.needRefetch = false;
-      }
+        if (newValue) {
+            fetchPet();
+            fetchServiceInstances();
+            fetch.needRefetch = false;
+        }
     }
 );
 
@@ -99,7 +99,7 @@ const handleDelete = async (service_instance_id: string) => {
                 <div class="flex flex-col gap-4 border-2 p-5">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xl font-semibold">Pet Information</h3>
-                      <UpdatePetForm />
+                        <UpdatePetForm />
                     </div>
 
                     <div class="flex gap-10 px-10 py-3">
@@ -157,7 +157,12 @@ const handleDelete = async (service_instance_id: string) => {
                         <h3 class="text-xl font-semibold">Histories:</h3>
                         <div class="flex items-center justify-center gap-4">
                             <DateRange v-model="dateRange" />
-                            <Button>Add Record</Button>
+                            <nuxt-link
+                                :to="`/records/pet/add_service/${pet_id}`">
+                                <Button class="dark:text-accent-foreground"
+                                    >Add Record</Button
+                                >
+                            </nuxt-link>
                         </div>
                     </div>
                     <ScrollArea class="h-[30rem] w-full px-10 py-1">
@@ -207,7 +212,10 @@ const handleDelete = async (service_instance_id: string) => {
                                         <div class="flex gap-3">
                                             <nuxt-link
                                                 :to="`/records/pet/service_instance/${service.service_instance_id}`">
-                                                <Button>View</Button>
+                                                <Button
+                                                    class="dark:text-accent-foreground"
+                                                    >View</Button
+                                                >
                                             </nuxt-link>
                                             <AlertDialog>
                                                 <AlertDialogTrigger>

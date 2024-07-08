@@ -3,10 +3,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 import { useForm } from 'vee-validate';
 import { toast } from '~/components/ui/toast';
-import {
-    DateFormatter,
-    parseDate,
-} from '@internationalized/date';
+import { DateFormatter, parseDate } from '@internationalized/date';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import {
     Popover,
@@ -54,7 +51,7 @@ const { isFieldDirty, handleSubmit, values, setFieldValue } = useForm({
 });
 
 const onSubmit = handleSubmit((values) => {
-  values.owner_id = owner_id;
+    values.owner_id = owner_id;
     petService
         .addPet(values)
         .then(() => {
@@ -75,7 +72,7 @@ const onSubmit = handleSubmit((values) => {
 
 const handleDateChange = (newDate) => {
     setFieldValue('pet_birth_date', newDate);
-}
+};
 
 const resetForm = () => {
     setFieldValue('pet_name', '');
@@ -129,32 +126,39 @@ const resetForm = () => {
                             <FormMessage />
                         </FormItem>
                     </FormField>
-
                 </div>
                 <FormField
                     name="pet_birth_date"
                     :validate-on-blur="!isFieldDirty('pet_birth_date')">
-                    <FormItem class="w-full flex items-center just gap-3">
+                    <FormItem class="just flex w-full items-center gap-3">
                         <FormLabel>Birth Date: </FormLabel>
-                      <Popover>
-                        <PopoverTrigger as-child>
-                          <FormControl>
-                            <Button
-                                variant="outline" :class="cn(
-                  'w-[240px] ps-3 text-start font-normal',
-                  !value && 'text-muted-foreground',
-                )"
-                            >
-                              <span>{{ value ? df.format(toDate(value)) : "Pick a date" }}</span>
-                              <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
-                            </Button>
-                            <input hidden>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <DateCalendar @update:date="handleDateChange"/>
-                        </PopoverContent>
-                      </Popover>
+                        <Popover>
+                            <PopoverTrigger as-child>
+                                <FormControl>
+                                    <Button
+                                        variant="outline"
+                                        :class="
+                                            cn(
+                                                'w-[240px] ps-3 text-start font-normal',
+                                                !value &&
+                                                    'text-muted-foreground'
+                                            )
+                                        ">
+                                        <span>{{
+                                            value
+                                                ? df.format(toDate(value))
+                                                : 'Pick a date'
+                                        }}</span>
+                                        <CalendarIcon
+                                            class="ms-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                    <input hidden />
+                                </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <DateCalendar @update:date="handleDateChange" />
+                            </PopoverContent>
+                        </Popover>
                         <FormMessage />
                     </FormItem>
                 </FormField>
@@ -208,21 +212,21 @@ const resetForm = () => {
                         <FormMessage />
                     </FormItem>
                 </FormField>
-              <FormField
-                  v-slot="{ componentField }"
-                  name="pet_breed"
-                  :validate-on-blur="!isFieldDirty('pet_breed')">
-                <FormItem class="w-full">
-                  <FormLabel>Breed: </FormLabel>
-                  <FormControl>
-                    <Input
-                        type="text"
-                        placeholder="Pet Breed"
-                        v-bind="componentField" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </FormField>
+                <FormField
+                    v-slot="{ componentField }"
+                    name="pet_breed"
+                    :validate-on-blur="!isFieldDirty('pet_breed')">
+                    <FormItem class="w-full">
+                        <FormLabel>Breed: </FormLabel>
+                        <FormControl>
+                            <Input
+                                type="text"
+                                placeholder="Pet Breed"
+                                v-bind="componentField" />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
 
                 <div class="flex gap-4 self-end py-4">
                     <Button

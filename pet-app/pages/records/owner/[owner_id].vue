@@ -43,7 +43,7 @@ const fetchOwnerAndPets = async () => {
     isDataReady.value = true;
 };
 
-const headers = ref<string[]>(['ID','Name', 'Type', 'Breed', 'Actions']);
+const headers = ref<string[]>(['ID', 'Name', 'Type', 'Breed', 'Actions']);
 
 const deletePet = async (pet_id: string) => {
     await petService
@@ -145,7 +145,7 @@ onMounted(async () => {
                                 <TableRow
                                     v-for="pet in pets"
                                     :key="pet.pet_id">
-                                  <TableCell>{{ pet.pet_id }}</TableCell>
+                                    <TableCell>{{ pet.pet_id }}</TableCell>
                                     <TableCell>{{ pet.pet_name }}</TableCell>
                                     <TableCell>{{ pet.pet_type }}</TableCell>
                                     <TableCell>{{ pet.pet_breed }}</TableCell>

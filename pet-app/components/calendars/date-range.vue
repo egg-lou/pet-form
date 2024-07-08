@@ -40,12 +40,12 @@ const dateStore = useDateRangeStore();
 const value = ref({
     start: new CalendarDate(
         yesterday.getFullYear(),
-        yesterday.getMonth(),
+        yesterday.getMonth() + 1,
         yesterday.getDate()
     ),
     end: new CalendarDate(
         today.getFullYear(),
-        today.getMonth(),
+        today.getMonth() + 1,
         today.getDate()
     )
 }) as Ref<DateRange>;

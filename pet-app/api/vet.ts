@@ -62,4 +62,18 @@ export class VetService extends AxiosService {
             throw await Promise.reject(error);
         }
     }
+
+    async vetLists() {
+        try {
+            const response = await  this.request(
+                'GET',
+                `${this.url}/get_vet_lists`
+            )
+            const { data, status, statusText } = response;
+            return { data, status, statusText };
+        } catch (error) {
+            console.error(error);
+            throw await Promise.reject(error);
+        }
+    }
 }
