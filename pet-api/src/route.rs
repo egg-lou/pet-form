@@ -57,27 +57,27 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
             "/update_service_instance/:service_instance_id",
             patch(update_service_instance),
         )
-        .route("/add_surgery_to_instance", post(add_surgery_to_instance))
-        .route("/add_grooming_to_instance", post(add_grooming_to_instance))
+        .route("/add_surgery_to_instance/:service_instance_id", post(add_surgery_to_instance))
+        .route("/add_grooming_to_instance/:service_instance_id", post(add_grooming_to_instance))
         .route(
-            "/add_preventive_care_to_instance",
+            "/add_preventive_care_to_instance/:service_instance_id",
             post(add_preventive_care_to_instance),
         )
         .route(
-            "/update_surgery_from_instance",
+            "/update_surgery_from_instance/:surgery_id",
             patch(update_surgery_from_instance),
         )
-        .route("/delete_service/:service_id", delete(delete_service))
+        .route("/delete_service/:service_instance_id", delete(delete_service))
         .route(
-            "/delete_grooming_from_instance",
+            "/delete_grooming_from_instance/:grooming_id",
             delete(delete_grooming_from_instance),
         )
         .route(
-            "/delete_preventive_care_from_instance",
+            "/delete_preventive_care_from_instance/:preventive_care_id",
             delete(delete_preventive_care_from_instance),
         )
         .route(
-            "/delete_surgery_from_instance",
+            "/delete_surgery_from_instance/:surgery_id",
             delete(delete_surgery_from_instance),
         );
 

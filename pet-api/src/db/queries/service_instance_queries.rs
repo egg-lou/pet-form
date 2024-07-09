@@ -37,8 +37,9 @@ impl ServiceInstanceQueries {
             create_grooming: r#"INSERT INTO grooming (grooming_type, service_instance_id) VALUES (?, ?)"#,
             create_preventive_care: r#"INSERT INTO preventive_care (treatment, vet_id,
             service_instance_id) VALUES (?, ?, ?)"#,
-            create_surgery: r#"INSERT INTO surgery (surgery_name, anesthesia_used, complications,
-             outcome, service_instance_id, vet_id) VALUES (?, ?, ?, ?, ?, ?)"#,
+            create_surgery: r#"INSERT INTO surgery (surgery_name,
+            veterinarian_diagnosis, anesthesia_used, complications,
+             outcome, service_instance_id, vet_id) VALUES (?, ?, ?, ?, ?, ?, ?)"#,
             get_specific_service_instance: r#"SELECT * FROM service_instance WHERE service_instance_id = ?"#,
             get_grooming_of_service_instance: r#"SELECT * FROM grooming WHERE service_instance_id = ?"#,
             get_preventive_care_of_service_instance: r#"SELECT * FROM preventive_care WHERE service_instance_id = ?"#,
@@ -126,6 +127,7 @@ impl ServiceInstanceQueries {
         if let Some(surgery) = surgery {
             let row = sqlx::query(&self.create_surgery)
                 .bind(surgery.surgery_name.clone())
+                .bind(surgery.veterinarian_diagnosis.clone())
                 .bind(surgery.anesthesia_used.clone())
                 .bind(surgery.complications.clone())
                 .bind(surgery.outcome.clone())
@@ -304,6 +306,7 @@ impl ServiceInstanceQueries {
                 .fetch_one(&*self.db)
                 .await?;
             let vet = VetModelForService {
+                vet_id: vet_row.get("vet_id"),
                 vet_name: vet_row.get("vet_name"),
                 vet_email: vet_row.get("vet_email"),
                 vet_phone_number: vet_row.get("vet_phone_number"),
@@ -330,6 +333,7 @@ impl ServiceInstanceQueries {
                 .fetch_one(&*self.db)
                 .await?;
             let vet = VetModelForService {
+                vet_id: vet_row.get("vet_id"),
                 vet_name: vet_row.get("vet_name"),
                 vet_email: vet_row.get("vet_email"),
                 vet_phone_number: vet_row.get("vet_phone_number"),
@@ -338,6 +342,7 @@ impl ServiceInstanceQueries {
             surgeries.push(SurgeryModel {
                 surgery_id: row.get("surgery_id"),
                 surgery_name: row.get("surgery_name"),
+                veterinarian_diagnosis: row.get("veterinarian_diagnosis"),
                 anesthesia_used: row.get("anesthesia_used"),
                 complications: row.get("complications"),
                 outcome: row.get("outcome"),

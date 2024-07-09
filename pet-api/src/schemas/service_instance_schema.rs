@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ServiceInstance {
     pub service_instance_id: String,
@@ -43,6 +44,11 @@ pub struct Grooming {
     pub grooming_id: Option<i32>,
     pub grooming_type: String,
     pub service_instance_id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct AddGroomingToInstance {
+    pub grooming_type: Vec<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]

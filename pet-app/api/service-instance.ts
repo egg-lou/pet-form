@@ -86,7 +86,7 @@ export class ServiceInstanceService extends AxiosService {
         }
     }
 
-    async addPreventiveCare(service_instance_id: string, preventiveCareData) {
+    async addPreventiveCare(service_instance_id, preventiveCareData) {
         try {
             const response = await this.request(
                 'POST',
@@ -101,7 +101,7 @@ export class ServiceInstanceService extends AxiosService {
         }
     }
 
-    async addGrooming(service_instance_id: string, groomingData) {
+    async addGrooming(service_instance_id, groomingData) {
         try {
             const response = await this.request(
                 'POST',
@@ -162,7 +162,7 @@ export class ServiceInstanceService extends AxiosService {
         try {
             const response = await this.request(
                 'PATCH',
-                `${this.url}/update_surgery/${surgery_id}`,
+                `${this.url}/update_surgery_from_instance/${surgery_id}`,
                 surgeryData
             );
             const { data, status, statusText } = response;

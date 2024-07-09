@@ -10,8 +10,8 @@ use crate::AppState;
 use crate::db::queries::service_instance_queries::ServiceInstanceQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::service_instance_schema::{
-    AddPreventiveCareToExisting, AddServiceInstance, AddSurgery, UpdateServiceInstance,
-    UpdateSurgery,
+    AddGroomingToInstance, AddPreventiveCareToExisting, AddServiceInstance, AddSurgery,
+    UpdateServiceInstance, UpdateSurgery,
 };
 
 
@@ -252,11 +252,11 @@ pub async fn add_preventive_care_to_instance(
 pub async fn add_grooming_to_instance(
     Path(service_instance_id): Path<String>,
     State(data): State<Arc<AppState>>,
-    Json(body): Json<Vec<String>>,
+    Json(body): Json<AddGroomingToInstance>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let service_instance_queries = ServiceInstanceQueries::new(Arc::new(data.db.clone()));
     match service_instance_queries
-        .add_grooming(service_instance_id, body)
+        .add_grooming(service_instance_id, body.grooming_type)
         .await
     {
         Ok(service_instance) => Ok((StatusCode::CREATED, Json(service_instance))),

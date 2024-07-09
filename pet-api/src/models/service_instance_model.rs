@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::vet_model::VetModelForService;
 
+
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct ServiceInstanceModel {
     pub service_instance_id: String,
@@ -34,6 +35,7 @@ pub struct PreventiveCareModel {
 pub struct SurgeryModel {
     pub surgery_id: i32,
     pub surgery_name: String,
+    pub veterinarian_diagnosis: Option<String>,
     pub anesthesia_used: Option<String>,
     pub complications: Option<String>,
     pub outcome: Option<String>,

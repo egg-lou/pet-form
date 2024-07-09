@@ -8,7 +8,7 @@ export interface ServiceContext {
     service_type: string[];
 }
 
-export interface ServiceInstance {
+export interface ServiceInstanceType {
     pet_id: string;
     service_instance_id: string;
     service_date: string;
