@@ -4,7 +4,6 @@ use sqlx::Row;
 
 use crate::models::pet_model::{PetModel, PetModelResponse};
 
-
 pub struct PetQueries {
     db: Arc<sqlx::MySqlPool>,
 }

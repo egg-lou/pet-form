@@ -160,6 +160,8 @@ export class ServiceInstanceService extends AxiosService {
 
     async updateSurgery(surgery_id, surgeryData) {
         try {
+            console.log(surgery_id);
+            console.log(surgeryData);
             const response = await this.request(
                 'PATCH',
                 `${this.url}/update_surgery_from_instance/${surgery_id}`,

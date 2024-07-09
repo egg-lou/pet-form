@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::vet_model::VetModelForService;
 
-
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct ServiceInstanceModel {
     pub service_instance_id: String,

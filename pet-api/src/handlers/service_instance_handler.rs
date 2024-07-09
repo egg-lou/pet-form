@@ -2,18 +2,17 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
+use axum::Json;
 use serde_json::json;
 
-use crate::AppState;
 use crate::db::queries::service_instance_queries::ServiceInstanceQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::service_instance_schema::{
     AddGroomingToInstance, AddPreventiveCareToExisting, AddServiceInstance, AddSurgery,
     UpdateServiceInstance, UpdateSurgery,
 };
-
+use crate::AppState;
 
 pub async fn add_service_instance(
     State(data): State<Arc<AppState>>,
@@ -208,7 +207,7 @@ pub async fn delete_surgery_from_instance(
 }
 
 pub async fn update_surgery_from_instance(
-    Path(surgery_id): Path<String>, // change from i32 to String
+    Path(surgery_id): Path<String>,
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateSurgery>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {

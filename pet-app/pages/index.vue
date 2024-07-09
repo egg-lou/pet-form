@@ -113,11 +113,6 @@ onMounted(() => {
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <nuxt-img
-                src="/img/icon.png"
-                alt="Paws and Claws Vet Clinic"
-                width="70"
-                height="70" />
             <h1 class="text-2xl font-bold">
                 Welcome to Paws and Claws Vet Clinic!
             </h1>

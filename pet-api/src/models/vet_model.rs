@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Deserialize, Serialize, Debug, sqlx::FromRow)]
 pub struct VetModel {
     pub vet_id: String,

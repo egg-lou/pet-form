@@ -12,7 +12,8 @@
         "format": "prettier --write .",
         "start:nuxt": "nuxt dev",
         "start:rust": "cd .. && cd pet-api && cargo run --release",
-        "dev": "concurrently \"npm run start:nuxt\" \"npm run start:rust\""
+        "dev": "concurrently \"npm run start:nuxt\" \"npm run start:rust\"",
+        "prod": "concurrently \"npm run preview\" \"npm run start:rust\""
     },
     "dependencies": {
         "@nuxt/eslint": "^0.3.13",

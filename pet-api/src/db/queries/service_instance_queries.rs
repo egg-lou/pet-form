@@ -12,7 +12,6 @@ use crate::schemas::service_instance_schema::{
     ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
 
-
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
     pub create_service_instance_type: &'static str,
@@ -454,6 +453,7 @@ impl ServiceInstanceQueries {
 
         query_string.push_str(" WHERE surgery_id = ?");
         params.push(surgery_id.to_string());
+
         let mut query = sqlx::query(&query_string);
         for param in params {
             query = query.bind(param);

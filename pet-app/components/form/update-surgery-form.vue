@@ -26,6 +26,7 @@ const fetchServiceInstance = async () => {
         outcome: response.data.surgery[0].outcome,
         vet_id: response.data.surgery[0].vet.vet_id
     });
+    surgeryId.value = response.data.surgery[0].surgery_id;
     selectedVetId.value = response.data.surgery[0].vet.vet_id;
     await getVets();
 };
