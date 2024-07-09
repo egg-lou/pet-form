@@ -73,7 +73,7 @@ const links = ref<{ name: string; href: string; description: string }[]>([
     {
         name: 'View Records',
         href: '/records',
-        description: 'Access all the records for the owners and pets'
+        description: 'Access all the records of owners and pets'
     },
     {
         name: 'View Veterinarians',
@@ -92,32 +92,32 @@ onMounted(() => {
     <div class="main flex flex-col items-center justify-center">
         <div class="flex w-full items-center justify-evenly">
             <div class="flex flex-col items-center">
-                <nuxt-img
+                <img
                     src="/img/Dog.png"
                     alt="Dog Logo"
                     width="100"
-                    height="100" />
+                    height="100" >
                 <h3 class="text-md font-semibold">
                     Total Visits: {{ dogTotalVisits }}
                 </h3>
             </div>
             <div class="flex flex-col items-center">
-                <nuxt-img
+                <img
                     src="/img/Cat.png"
                     alt="Cat Logo"
                     width="100"
-                    height="100" />
+                    height="100" >
                 <h3 class="text-md font-semibold">
                     Total Visits: {{ dogTotalVisits }}
                 </h3>
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <nuxt-img
+            <img
                 src="/img/icon.png"
                 alt="Paws and Claws Vet Clinic"
                 width="70"
-                height="70" />
+                height="70" >
             <h1 class="text-2xl font-bold">
                 Welcome to Paws and Claws Vet Clinic!
             </h1>
@@ -148,11 +148,11 @@ onMounted(() => {
                 v-for="item in data"
                 :key="item.name"
                 class="flex flex-col items-center gap-3 px-3">
-                <nuxt-img
+                <img
                     :src="item.image"
                     :alt="item.name"
                     width="50"
-                    height="50" />
+                    height="50" >
                 <h3 class="text-md font-semibold">
                     {{ item.name }}: {{ item.value }}
                 </h3>

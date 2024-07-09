@@ -46,11 +46,11 @@ onMounted(async () => {
             <div class="h-[80vh] p-10">
                 <div class="flex items-center justify-between px-3 py-3">
                     <div class="flex items-center gap-4">
-                        <nuxt-img
+                        <img
                             src="/img/icon.png"
                             alt="Paws and Claws Vet Clinic"
                             width="50"
-                            height="50" />
+                            height="50" >
                         <h3 class="text-xl font-semibold">Veterinarians</h3>
                     </div>
                     <VetForm :mode="'add'" />

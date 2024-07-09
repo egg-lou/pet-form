@@ -68,11 +68,11 @@ onMounted(async () => {
                 <div class="mb-2 flex items-center justify-between px-3 py-3">
                     <div class="flex w-full items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <nuxt-img
+                            <img
                                 src="/img/icon.png"
                                 alt="Paws and Claws Vet Clinic"
                                 width="50"
-                                height="50" />
+                                height="50" >
                             <h3
                                 v-if="activeTab === 'owners'"
                                 class="text-xl font-semibold">
