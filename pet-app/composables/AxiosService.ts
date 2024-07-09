@@ -9,6 +9,7 @@ export class AxiosService {
         this.baseURL = config.public.apiUrl;
         axios.defaults.baseURL = this.baseURL;
         axios.defaults.headers.post['Content-Type'] = 'application/json';
+        axios.defaults.headers.patch['Content-Type'] = 'application/json';
     }
 
     async request(

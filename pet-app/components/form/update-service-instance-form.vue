@@ -63,6 +63,11 @@ const { handleSubmit, isFieldDirty, values, setFieldValue, setValues } =
     });
 
 const onSubmit = handleSubmit(async (values) => {
+  console.log(values)
+  if (!values.requires_followup) {
+        values.followup_date = null;
+  }
+
     await serviceInstanceService
         .updateServiceInstance(service_instance_id, values)
         .then(() => {

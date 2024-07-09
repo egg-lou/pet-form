@@ -68,8 +68,8 @@ export class ServiceInstanceService extends AxiosService {
     }
 
     async updateServiceInstance(
-        service_instance: any,
-        service_instance_id: string
+        service_instance_id: string,
+    service_instance: any,
     ) {
         try {
             const response = await this.request(

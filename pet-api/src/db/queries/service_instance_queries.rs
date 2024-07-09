@@ -506,13 +506,20 @@ impl ServiceInstanceQueries {
         }
 
         if let Some(requires_followup) = update_service_instance.requires_followup {
+            let requires_followup_int = if requires_followup { 1 } else { 0 };
             query_string.push_str("requires_followup = ?, ");
-            params.push(requires_followup.to_string());
+            params.push(requires_followup_int.to_string());
+
+            if !requires_followup {
+                query_string.push_str("followup_date = NULL, ");
+            }
         }
 
         if let Some(followup_date) = update_service_instance.followup_date {
-            query_string.push_str("followup_date = ?, ");
-            params.push(followup_date.to_string());
+            if update_service_instance.requires_followup != Some(false) {
+                query_string.push_str("followup_date = ?, ");
+                params.push(followup_date.to_string());
+            }
         }
 
         if query_string.ends_with(", ") {
