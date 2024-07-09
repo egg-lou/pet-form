@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c152abb-6a3e-4598-a5df-a7032436178e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" beforeDir="false" afterPath="$PROJECT_DIR$/pet-api/src/db/queries/service_instance_queries.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/api/service-instance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/api/service-instance.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/components/form/update-service-instance-form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/components/form/update-service-instance-form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pet-app/composables/AxiosService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/composables/AxiosService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-app/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pet-app/nuxt.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +102,7 @@
       <workItem from="1720395251184" duration="27830000" />
       <workItem from="1720435151769" duration="112000" />
       <workItem from="1720435287064" duration="16161000" />
-      <workItem from="1720481671501" duration="18005000" />
+      <workItem from="1720481671501" duration="18330000" />
     </task>
     <servers />
   </component>
