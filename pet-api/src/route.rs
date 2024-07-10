@@ -15,8 +15,8 @@ use crate::{
             add_grooming_to_instance, add_preventive_care_to_instance, add_service_instance,
             add_surgery_to_instance, delete_grooming_from_instance,
             delete_preventive_care_from_instance, delete_service, delete_surgery_from_instance,
-            get_pet_histories, get_specific_service_instance, update_service_instance,
-            update_surgery_from_instance,
+            get_all_service_instances, get_pet_histories, get_specific_service_instance,
+            update_service_instance, update_surgery_from_instance,
         },
         statistics_handler::{counter_services, pet_type_visit_summery},
         vet_handler::{add_vet, delete_vet, get_vet_lists, get_vets, update_vet},
@@ -47,6 +47,7 @@ pub fn create_router(app_state: Arc<AppState>) -> Router {
         .route("/get_vet_lists", get(get_vet_lists));
 
     let service_instance_routes = Router::new()
+        .route("/get_all_service_instances", get(get_all_service_instances))
         .route("/add_service_instance", post(add_service_instance))
         .route("/get_pet_histories/:pet_id", get(get_pet_histories))
         .route(

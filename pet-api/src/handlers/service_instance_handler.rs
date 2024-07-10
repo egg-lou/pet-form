@@ -2,17 +2,39 @@ use std::sync::Arc;
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
+use axum::response::IntoResponse;
 use serde_json::json;
 
+use crate::AppState;
 use crate::db::queries::service_instance_queries::ServiceInstanceQueries;
 use crate::schemas::helper_schema::FilterOptions;
 use crate::schemas::service_instance_schema::{
     AddGroomingToInstance, AddPreventiveCareToExisting, AddServiceInstance, AddSurgery,
     UpdateServiceInstance, UpdateSurgery,
 };
-use crate::AppState;
+
+
+pub async fn get_all_service_instances(
+    State(data): State<Arc<AppState>>,
+    opts: Option<Query<FilterOptions>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let service_instance_queries = ServiceInstanceQueries::new(Arc::new(data.db.clone()));
+    match service_instance_queries.get_all_service_instances().await {
+        Ok(service_instances) => {
+            let response = json!({
+                "status":"success",
+                "message":"Service instances fetched successfully",
+                "service_instances": service_instances,
+            });
+            Ok((StatusCode::OK, Json(response)))
+        }
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "error": e.to_string() })),
+        )),
+    }
+}
 
 pub async fn add_service_instance(
     State(data): State<Arc<AppState>>,

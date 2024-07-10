@@ -71,7 +71,7 @@ const updateTotalVisits = async () => {
 
 const links = ref<{ name: string; href: string; description: string }[]>([
     {
-        name: 'View Records',
+        name: 'View Pets and Owners',
         href: '/records',
         description: 'Access all the records for the owners and pets'
     },
@@ -79,6 +79,11 @@ const links = ref<{ name: string; href: string; description: string }[]>([
         name: 'View Veterinarians',
         href: '/veterinarians',
         description: 'Access all the veterinarians in the clinic'
+    },
+    {
+        name: 'View All Histories',
+        href: '/service_instances',
+        description: 'Access all the service instances in the clinic'
     }
 ]);
 

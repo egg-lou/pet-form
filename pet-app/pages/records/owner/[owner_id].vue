@@ -125,7 +125,7 @@ onMounted(async () => {
                         <h3 class="text-xl font-semibold">Pets:</h3>
                         <PetForm />
                     </div>
-                    <ScrollArea class="h-[23.5rem] w-full px-10 py-1">
+                    <ScrollArea class="h-[26.5rem] w-full px-10 py-1">
                         <h3
                             v-if="pets.length === 0"
                             class="text-center">

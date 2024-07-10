@@ -18,6 +18,23 @@ pub struct ServiceInstanceModel {
 }
 
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
+pub struct AllServiceInstanceModel {
+    pub service_instance_id: String,
+    pub service_date: chrono::NaiveDate,
+    pub service_type: Vec<String>,
+    pub pet: SimplePetModel,
+}
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct SimplePetModel {
+    pub pet_id: String,
+    pub pet_name: String,
+    pub pet_type: String,
+    pub pet_breed: String,
+    pub owner_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct GroomingModel {
     pub grooming_id: i32,
     pub grooming_type: String,

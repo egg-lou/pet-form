@@ -160,12 +160,24 @@ export class ServiceInstanceService extends AxiosService {
 
     async updateSurgery(surgery_id, surgeryData) {
         try {
-            console.log(surgery_id);
-            console.log(surgeryData);
             const response = await this.request(
                 'PATCH',
                 `${this.url}/update_surgery_from_instance/${surgery_id}`,
                 surgeryData
+            );
+            const { data, status, statusText } = response;
+            return { data, status, statusText };
+        } catch (error) {
+            console.error(error);
+            return await Promise.reject(error);
+        }
+    }
+
+    async getAllServiceInstances() {
+        try {
+            const response = await this.request(
+                'GET',
+                `${this.url}/get_all_service_instances`
             );
             const { data, status, statusText } = response;
             return { data, status, statusText };

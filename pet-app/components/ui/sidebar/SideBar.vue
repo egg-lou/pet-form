@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { Stethoscope, Archive, House, Plus } from 'lucide-vue-next';
+import { Stethoscope, Archive, House, FileText } from 'lucide-vue-next';
 
 const route = useRoute();
 </script>
@@ -21,6 +21,14 @@ const route = useRoute();
                 variant="ghost"
                 :class="{ 'active-link': route.path.startsWith('/records') }">
                 <Archive class="icon" />
+            </Button>
+        </nuxt-link>
+
+        <nuxt-link to="/service_instances">
+            <Button
+                variant="ghost"
+                :class="{ 'active-link': route.path === '/service_instances' }">
+                <FileText class="icon" />
             </Button>
         </nuxt-link>
 

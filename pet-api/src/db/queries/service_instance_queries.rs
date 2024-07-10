@@ -4,13 +4,15 @@ use std::sync::Arc;
 use sqlx::Row;
 
 use crate::models::service_instance_model::{
-    GetServicesHistoryModel, GroomingModel, PreventiveCareModel, ServiceInstanceModel, SurgeryModel,
+    AllServiceInstanceModel, GetServicesHistoryModel, GroomingModel, PreventiveCareModel,
+    ServiceInstanceModel, SimplePetModel, SurgeryModel,
 };
 use crate::models::vet_model::VetModelForService;
 use crate::schemas::service_instance_schema::{
     AddPreventiveCare, AddPreventiveCareToExisting, AddSurgery, Grooming, PreventiveCare,
     ServiceInstance, Surgery, UpdateServiceInstance, UpdateSurgery,
 };
+
 
 pub struct ServiceInstanceQueries {
     db: Arc<sqlx::MySqlPool>,
@@ -24,6 +26,7 @@ pub struct ServiceInstanceQueries {
     pub get_preventive_care_of_service_instance: &'static str,
     pub get_surgery_of_service_instance: &'static str,
     pub get_service_instance_type: &'static str,
+    pub get_all_service_instance: &'static str,
 }
 
 impl ServiceInstanceQueries {
@@ -40,6 +43,7 @@ impl ServiceInstanceQueries {
             veterinarian_diagnosis, anesthesia_used, complications,
              outcome, service_instance_id, vet_id) VALUES (?, ?, ?, ?, ?, ?, ?)"#,
             get_specific_service_instance: r#"SELECT * FROM service_instance WHERE service_instance_id = ?"#,
+            get_all_service_instance: r#"SELECT * FROM service_instance"#,
             get_grooming_of_service_instance: r#"SELECT * FROM grooming WHERE service_instance_id = ?"#,
             get_preventive_care_of_service_instance: r#"SELECT * FROM preventive_care WHERE service_instance_id = ?"#,
             get_surgery_of_service_instance: r#"SELECT * FROM surgery WHERE service_instance_id = ?"#,
@@ -245,6 +249,59 @@ impl ServiceInstanceQueries {
         }
 
         Ok(services)
+    }
+    pub async fn get_all_service_instances(
+        &self,
+    ) -> Result<Vec<AllServiceInstanceModel>, sqlx::Error> {
+        let rows = sqlx::query(
+            "
+        SELECT si.service_instance_id, si.service_date,
+               GROUP_CONCAT(st.service_type_name SEPARATOR ', ') AS service_type,
+               p.pet_id, p.pet_name, p.pet_type, p.pet_breed, o.owner_name
+        FROM service_instance si
+        JOIN pet p ON si.pet_id = p.pet_id
+        JOIN owner o ON p.owner_id = o.owner_id
+        JOIN service_type st ON si.service_instance_id = st.service_instance_id
+        GROUP BY si.service_instance_id, p.pet_id, o.owner_id
+        ORDER BY si.service_date DESC
+        ",
+        )
+        .fetch_all(&*self.db)
+        .await?;
+
+        let mut service_instances = Vec::new();
+        for row in rows {
+            let service_instance = AllServiceInstanceModel {
+                service_instance_id: row.try_get("service_instance_id")?,
+                service_date: row.try_get("service_date")?,
+                service_type: row
+                    .try_get::<String, _>("service_type")?
+                    .split(',')
+                    .map(String::from)
+                    .collect(),
+                pet: SimplePetModel {
+                    pet_id: row.try_get("pet_id")?,
+                    pet_name: row.try_get("pet_name")?,
+                    pet_type: row.try_get("pet_type")?,
+                    pet_breed: row.try_get("pet_breed")?,
+                    owner_name: row.try_get("owner_name")?,
+                },
+            };
+            service_instances.push(service_instance);
+        }
+
+        Ok(service_instances)
+    }
+
+    pub async fn count_all_service_instances(&self) -> Result<i64, sqlx::Error> {
+        let query = String::from("SELECT COUNT(*) as count FROM service_instance");
+
+        let count = sqlx::query(&query);
+
+        count
+            .fetch_one(&*self.db)
+            .await
+            .map(|row: sqlx::mysql::MySqlRow| row.get("count"))
     }
     pub async fn get_specific_instance(
         &self,
